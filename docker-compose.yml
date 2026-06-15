@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  # 1. بوابة العبور والواجهة الأمامية
+  gateway_service:
+    build: ./services/gateway_service
+    container_name: gateway_microservice
+    ports:
+      - "8000:8000"
+    environment:
+      - PREPROCESSING_URL=http://preprocessing_service:8001
+      - INDEXING_URL=http://indexing_service:8002
+      - RETRIEVAL_URL=http://retrieval_service:8003
+      - EVALUATION_URL=http://evaluation_service:8005
+    depends_on:
+      - preprocessing_service
+      - retrieval_service
+
+  # 2. خدمة المعالجة المسبقة للنصوص
+  preprocessing_service:
+    build: ./services/preprocessing_service
+    container_name: preprocessing_microservice
+    ports:
+      - "8001:8001"
+    volumes:
+      - shared_data:/app/data
+
+  # 3. خدمة بناء الفهارس (TF-IDF, BM25)
+  indexing_service:
+    build: ./services/indexing_service
+    container_name: indexing_microservice
+    ports:
+      - "8002:8002"
+    volumes:
+      - shared_data:/app/data
+      - shared_cache:/app/ir_datasets_cache
+
+  # 4. محرك البحث والاسترجاع الهجين
+  retrieval_service:
+    build: ./services/retrieval_service
+    container_name: retrieval_microservice
+    ports:
+      - "8003:8003"
+    environment:
+      - INDEXING_URL=http://indexing_service:8002
+    volumes:
+      - shared_data:/app/data
+    depends_on:
+      - indexing_service
+
+  # 5. خدمة تجميع الوثائق (Clustering)
+  clustering_service:
+    build: ./services/clustering_service
+    container_name: clustering_microservice
+    ports:
+      - "8004:8004"
+    volumes:
+      - shared_data:/app/data
+
+  # 6. خدمة حساب مقاييس التقييم (MAP, nDCG...)
+  evaluation_service:
+    build: ./services/evaluation_service
+    container_name: evaluation_microservice
+    ports:
+      - "8005:8005"
+    volumes:
+      - shared_data:/app/data
+
+  # 7. خدمة تحسين الاستعلامات وتوسيعها
+  query_refinement_service:
+    build: ./services/query_refinement_service
+    container_name: query_refinement_microservice
+    ports:
+      - "8006:8006"
+    volumes:
+      - shared_data:/app/data
+
+# 💾 الجسر الحيوي: مشاركة قاعدة البيانات والـ Cache بين الحاويات المعزولة
+volumes:
+  shared_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./data
+  shared_cache:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./ir_datasets_cache
