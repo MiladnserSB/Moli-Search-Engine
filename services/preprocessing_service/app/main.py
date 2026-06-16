@@ -46,13 +46,15 @@ preprocessor = Preprocessor()
 class SinglePreprocessRequest(BaseModel):
     text: str
     dataset_name: Optional[str] = "Query"
+    pipeline_type: Optional[str] = "classical"  # "classical" (TF-IDF/BM25) أو "neural" (BERT/Embeddings)
     stem: Optional[bool] = False
     lemmatize: Optional[bool] = True
     run_semantics: Optional[bool] = False
     run_spellcheck: Optional[bool] = False
 
 class DatabaseBatchRequest(BaseModel):
-    dataset_name: str  # مثل "quora_dev" أو "lotte_tech_dev"
+    dataset_name: str                     # مثل "quora" أو "lotte"
+    pipeline_type: Optional[str] = "classical"  # "classical" أو "neural"
     batch_size: Optional[int] = 20000
 
 @app.get("/health")
@@ -62,78 +64,105 @@ def health():
 @app.post("/preprocess")
 def preprocess_single_text(request: SinglePreprocessRequest):
     """معالجة فجائية فورية للنصوص والاستعلامات الحية"""
-    processed_text, tokens = preprocessor.preprocess(
+    processed_text, tokens, sentiment = preprocessor.preprocess(
         text=request.text,
         dataset_name=request.dataset_name,
+        pipeline_type=request.pipeline_type,
         stem=request.stem,
         lemmatize=request.lemmatize,
         verbose=True,
         run_semantics=request.run_semantics,
         run_spellcheck=request.run_spellcheck
     )
-    # FIX: Added 'semantics' payload to capture the new VADER & Transformer calculations smoothly
     return {
         "original_text": request.text, 
         "processed_text": processed_text, 
         "tokens": tokens,
-        "semantics": preprocessor.latest_sentiment
+        "pipeline_type": request.pipeline_type,
+        "semantics": sentiment
     }
 
 
-def database_batch_worker(dataset_name: str, batch_size: int):
+def database_batch_worker(dataset_name: str, pipeline_type: str, batch_size: int):
     """محرك الـ Batch Processing لمعالجة قاعدة البيانات الضخمة دون استهلاك الذاكرة RAM"""
-    print(f"\n[DATABASE WORKER] Triggered bulk processing for: {dataset_name.upper()}")
+    pipeline_type = pipeline_type.lower()
+    # تعديل ذكي: دمج نوع الأنبوب مع اسم المجموعة لمنع تضارب البيانات والسماح بحفظ تمثيلين لنفس المستند
+    db_dataset_identifier = f"{dataset_name}_{pipeline_type}"
+    
+    print(f"\n[DATABASE WORKER] Triggered bulk processing for: {db_dataset_identifier.upper()}")
     try:
         conn = sqlite3.connect(DB_PATH, timeout=60.0)
         cursor = conn.cursor()
 
-        # تجنب التكرار: إذا كانت المجموعة معالجة مسبقاً، نتوقف
-        cursor.execute("SELECT COUNT(*) FROM processed_documents WHERE dataset_name = ?", (dataset_name,))
-        if cursor.fetchone()[0] > 0:
-            print(f"ℹ️ Dataset [{dataset_name.upper()}] already processed inside database. Aborting.")
-            conn.close()
-            return
+        # التحقق من حالة الإكمال الكلي أو الجزئي لتفادي التكرار أو البدء من منتصف دفعات تالفة
+        cursor.execute("SELECT COUNT(*) FROM documents WHERE dataset_name = ?", (dataset_name,))
+        total_docs = cursor.fetchone()[0]
 
-        offset = 0
+        cursor.execute("SELECT COUNT(*) FROM processed_documents WHERE dataset_name = ?", (db_dataset_identifier,))
+        processed_docs = cursor.fetchone()[0]
+
+        if processed_docs > 0:
+            if processed_docs >= total_docs:
+                print(f"ℹ️ Dataset [{db_dataset_identifier.upper()}] already fully processed inside database ({processed_docs}/{total_docs}). Aborting.")
+                conn.close()
+                return
+            else:
+                print(f"⚠️ Dataset [{db_dataset_identifier.upper()}] was partially processed ({processed_docs}/{total_docs}). Clearing and restarting.")
+                cursor.execute("DELETE FROM processed_documents WHERE dataset_name = ?", (db_dataset_identifier,))
+                conn.commit()
+
+        last_id = 0
+        processed_count = 0
         while True:
-            # تطبيق مفهوم الـ Lazy Loading عبر سحب دفعات محددة الحجم فقط بالتتالي
+            # تطبيق مفهوم الـ Keyset Pagination (Seek Method) السريع لتجنب بطء OFFSET في الجداول الضخمة
             cursor.execute(
-                "SELECT doc_id, text FROM documents WHERE dataset_name = ? LIMIT ? OFFSET ?",
-                (dataset_name, batch_size, offset)
+                "SELECT id, doc_id, text FROM documents WHERE dataset_name = ? AND id > ? ORDER BY id ASC LIMIT ?",
+                (dataset_name, last_id, batch_size)
             )
             rows = cursor.fetchall()
-            if not rows: break # عند انتهاء المستندات نخرج من الحلقة
+            if not rows: 
+                break # عند انتهاء المستندات نخرج من الحلقة
 
+            # تقسيم الدفعة الكبيرة إلى دفعات فرعية (Mini-batches) بحجم 1000 لتفادي استهلاك الذاكرة والـ CPU الزائد في NLTK
+            mini_batch_size = 1000
             buffer = []
-            for idx, (doc_id, text) in enumerate(rows):
-                # فكرة ذكية: نطبع تقرير الخطوات خطوة بخطوة للمستند الأول فقط في كل دفعة لمعاينة المهندسة
-                show_logs = (idx == 0)
+            
+            for i in range(0, len(rows), mini_batch_size):
+                chunk = rows[i:i+mini_batch_size]
+                chunk_texts = [r[2] for r in chunk]
                 
-                proc_text, _ = preprocessor.preprocess(
-                    text=text,
-                    dataset_name=f"{dataset_name} (Chunk-Row-Check)",
+                # طباعة السجلات للمجموعة الفرعية الأولى فقط للمراقبة المعمارية
+                show_logs = (processed_count == 0 and i == 0)
+                
+                batch_results = preprocessor.preprocess_batch(
+                    texts=chunk_texts,
+                    dataset_name=f"{db_dataset_identifier} (Batch-Check)",
+                    pipeline_type=pipeline_type,
                     stem=False,
-                    lemmatize=True,
+                    lemmatize=(pipeline_type == "classical"),
                     verbose=show_logs,
                     run_semantics=False,
                     run_spellcheck=False
                 )
-                if proc_text:
-                    buffer.append((dataset_name, doc_id, proc_text))
-
-            # حفظ الدفعة الحالية بالكامل لضمان سرعة معالجة قصوى
+                
+                for (doc_id, text), (proc_text, _, _) in zip([(r[1], r[2]) for r in chunk], batch_results):
+                    if proc_text:
+                        buffer.append((db_dataset_identifier, doc_id, proc_text))
+            
+            # حفظ الدفعة الحالية بالكامل لضمان سرعة معالجة قصوى وضغط عمليات الكتابة I/O
             if buffer:
                 cursor.executemany(
                     "INSERT INTO processed_documents (dataset_name, doc_id, processed_text) VALUES (?, ?, ?)",
                     buffer
                 )
                 conn.commit()
-                print(f"📦 [BATCH SAVED] Successfully synchronized offset chunk up to row: {offset + len(rows)}")
-
-            offset += batch_size
+                processed_count += len(buffer)
+                print(f"📦 [{pipeline_type.upper()} BATCH SAVED] Synchronized chunk up to row ID: {rows[-1][0]} (Processed {len(buffer)} docs)")
+            
+            last_id = rows[-1][0]
 
         conn.close()
-        print(f"🎉 Offline database preprocessing pipeline finalized for: {dataset_name.upper()}\n")
+        print(f"🎉 Offline database preprocessing pipeline finalized for: {db_dataset_identifier.upper()}\n")
     except Exception as e:
         print(f"❌ Error during database batch processing: {e}")
 
@@ -144,5 +173,8 @@ def preprocess_entire_database(request: DatabaseBatchRequest, background_tasks: 
     if not os.path.exists(DB_PATH):
         raise HTTPException(status_code=404, detail=f"Database store file missing at expected path: {DB_PATH}")
     
-    background_tasks.add_task(database_batch_worker, request.dataset_name, request.batch_size)
-    return {"message": f"Database pipeline for '{request.dataset_name}' successfully queued as an offline background process."}
+    if request.pipeline_type.lower() not in ["classical", "neural"]:
+        raise HTTPException(status_code=400, detail="Invalid pipeline_type. Must be 'classical' or 'neural'.")
+        
+    background_tasks.add_task(database_batch_worker, request.dataset_name, request.pipeline_type, request.batch_size)
+    return {"message": f"Database pipeline for '{request.dataset_name}' [{request.pipeline_type}] successfully queued as a background process."}

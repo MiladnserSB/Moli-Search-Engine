@@ -26,3 +26,27 @@ class TextSpellChecker:
                 corrected_tokens.append(token)
                 
         return corrected_tokens
+
+    def correct_tokens_batch(self, token_lists: List[List[str]]) -> List[List[str]]:
+        """Corrects a batch of token collections, optimizing unknown lookups and caching."""
+        if not token_lists:
+            return []
+
+        # Find all unique tokens across the entire batch to query pyspellchecker in one go
+        all_tokens = list(set(t for tokens in token_lists for t in tokens))
+        misspelled = self.spell.unknown(all_tokens)
+
+        # Batch fill cache for any unknown tokens not already cached
+        for token in misspelled:
+            if token not in self.cache:
+                corrected = self.spell.correction(token)
+                self.cache[token] = corrected if corrected is not None else token
+
+        # Reconstruct corrected lists using the cache
+        corrected_lists = []
+        for tokens in token_lists:
+            corrected_lists.append([
+                self.cache[t] if t in misspelled else t
+                for t in tokens
+            ])
+        return corrected_lists
