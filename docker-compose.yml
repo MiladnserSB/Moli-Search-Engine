@@ -23,7 +23,7 @@ services:
     ports:
       - "8001:8001"
     volumes:
-      - shared_data:/app/data
+      - ./data:/app/data
 
   # 3. خدمة بناء الفهارس (TF-IDF, BM25)
   indexing_service:
