@@ -46,7 +46,6 @@ if __name__ == "__main__":
     # 2. Target Repositories Configurations
     target_datasets = [
         {"name": "beir/quora/dev", "db_label": "quora_dev"},
-        # {"name": "lotte/technology/dev/forum", "db_label": "lotte_tech_dev"}
         {"name": "lotte/lifestyle/dev/forum", "db_label": "lotte_lifestyle_dev"}
     ]
     

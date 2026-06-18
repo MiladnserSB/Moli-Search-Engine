@@ -2,3 +2,4 @@
 data/
 ir_datasets_cache/
 scripts/__pycache__/
+lectures/
