@@ -1,17 +1,50 @@
-# Hybrid Retrieval Orchestration: Serial and Parallel Methods
+from .fusion import reciprocal_rank_fusion
+
 
 class HybridSearcher:
+
     def __init__(self, sparse_scorer, dense_searcher):
         self.sparse_scorer = sparse_scorer
         self.dense_searcher = dense_searcher
 
-    def search_serial(self, query_tokens: list[str], query_emb: list[float], top_k: int = 10) -> list[dict]:
-        # Step 1: Retrieve top M candidates using sparse retrieval (BM25/TF-IDF)
-        # Step 2: Rerank those candidates using dense embedding similarity
-        return []
+    def search_serial(
+        self,
+        query_tokens,
+        query_embedding,
+        top_k=10
+    ):
 
-    def search_parallel(self, query_tokens: list[str], query_emb: list[float], top_k: int = 10) -> list[dict]:
-        # Step 1: Query sparse scorer (e.g., BM25) -> sparse results list
-        # Step 2: Query dense vector search -> dense results list
-        # Step 3: Run fusion method (e.g., RRF) to compute combined scores
-        return []
+        candidates = self.sparse_scorer.search(
+            query_tokens,
+            top_k=100
+        )
+
+        reranked = self.dense_searcher.rerank(
+            query_embedding,
+            candidates
+        )
+
+        return reranked[:top_k]
+
+    def search_parallel(
+        self,
+        query_tokens,
+        query_embedding,
+        top_k=10
+    ):
+
+        sparse_results = self.sparse_scorer.search(
+            query_tokens,
+            top_k=100
+        )
+
+        dense_results = self.dense_searcher.search(
+            query_embedding,
+            top_k=100
+        )
+
+        fused = reciprocal_rank_fusion(
+            [sparse_results, dense_results]
+        )
+
+        return fused[:top_k]

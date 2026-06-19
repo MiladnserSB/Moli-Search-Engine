@@ -1,24 +1,48 @@
-# Matching & Scoring implementations: TF-IDF and BM25
-import math
+import joblib
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
 
-class TFIDFScorer:
-    def __init__(self, index):
-        self.index = index # Inverted index terms -> list of (doc_id, tf)
-        self.doc_lengths = {}
-        
-    def score(self, query_tokens: list[str], doc_id: str) -> float:
-        # Calculate cosine similarity using Term Frequency - Inverse Document Frequency
-        return 0.0
 
-class BM25Scorer:
-    def __init__(self, index, doc_lengths, avg_doc_len, k1=1.5, b=0.75):
-        self.index = index
-        self.doc_lengths = doc_lengths
-        self.avg_doc_len = avg_doc_len
-        self.k1 = k1
-        self.b = b
-        
-    def score(self, query_tokens: list[str], doc_id: str) -> float:
-        # Calculate BM25 score for the query in doc_id
-        # Score = Sum ( IDF * TF * (k1 + 1) / (TF + k1 * (1 - b + b * (doc_len / avg_doc_len))) )
-        return 0.0
+class TFIDFSearcher:
+    def __init__(self, model_path):
+        data = joblib.load(model_path)
+
+        self.vectorizer = data["vectorizer"]
+        self.doc_vectors = data["vectors"]
+        self.doc_ids = data["doc_ids"]
+
+    def search(self, query_text, top_k=100):
+        q = self.vectorizer.transform([query_text])
+
+        scores = cosine_similarity(q, self.doc_vectors).flatten()
+
+        idx = np.argsort(scores)[::-1][:top_k]
+
+        return [
+            {
+                "id": self.doc_ids[i],
+                "score": float(scores[i])
+            }
+            for i in idx
+        ]
+
+
+class BM25Searcher:
+    def __init__(self, model_path):
+        data = joblib.load(model_path)
+
+        self.bm25 = data["bm25_vectorizer"]
+        self.doc_ids = data["doc_ids"]
+
+    def search(self, query_tokens, top_k=100):
+        scores = self.bm25.get_scores(query_tokens)
+
+        idx = np.argsort(scores)[::-1][:top_k]
+
+        return [
+            {
+                "id": self.doc_ids[i],
+                "score": float(scores[i])
+            }
+            for i in idx
+        ]
