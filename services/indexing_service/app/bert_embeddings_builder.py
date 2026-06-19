@@ -21,10 +21,19 @@ def build_bert_representation(dataset_name: str) -> dict:
     conn = sqlite3.connect(settings.DB_PATH)
     print("[DB_LOAD] Loading raw documents from 'documents' table...")
     df = pd.read_sql(
-        "SELECT doc_id, text FROM documents WHERE dataset_name = ? AND text IS NOT NULL", 
-        conn, 
-        params=(dataset_name,)
-    )
+    """
+    SELECT d.doc_id, d.text
+    FROM documents d
+    INNER JOIN processed_documents p 
+        ON CAST(d.doc_id AS TEXT) = p.doc_id 
+        AND p.dataset_name = ?
+    WHERE d.dataset_name = ? 
+      AND d.text IS NOT NULL 
+      AND d.text != ''
+    """,
+    conn,
+    params=(f"{dataset_name}_classical", dataset_name)
+)
     conn.close()
     
     total_docs = len(df)

@@ -284,52 +284,52 @@ def database_batch_worker(dataset_name: str, pipeline_type: str, batch_size: int
         cursor.execute("SELECT COUNT(*) FROM processed_documents WHERE dataset_name = ?", (db_dataset_identifier,))
         processed_docs = cursor.fetchone()[0]
 
-        # if processed_docs > 0:
-        #     if processed_docs >= total_docs:
-        #         print(f"ℹ️ Dataset [{db_dataset_identifier.upper()}] already fully processed inside database ({processed_docs}/{total_docs}). Aborting.")
-        #         conn.close()
-        #         return
-        #     else:
-        #         print(f"⚠️ Dataset [{db_dataset_identifier.upper()}] was partially processed ({processed_docs}/{total_docs}). Clearing and restarting.")
-        #         cursor.execute("DELETE FROM processed_documents WHERE dataset_name = ?", (db_dataset_identifier,))
-        #         conn.commit()
+        if processed_docs > 0:
+            if processed_docs >= total_docs:
+                print(f"ℹ️ Dataset [{db_dataset_identifier.upper()}] already fully processed inside database ({processed_docs}/{total_docs}). Aborting.")
+                conn.close()
+                return
+            else:
+                print(f"⚠️ Dataset [{db_dataset_identifier.upper()}] was partially processed ({processed_docs}/{total_docs}). Clearing and restarting.")
+                cursor.execute("DELETE FROM processed_documents WHERE dataset_name = ?", (db_dataset_identifier,))
+                conn.commit()
         # حساب عدد المستندات المعالجة الفريدة فقط
-        cursor.execute("""
-            SELECT COUNT(DISTINCT doc_id)
-            FROM processed_documents
-            WHERE dataset_name = ?
-        """, (db_dataset_identifier,))
-        processed_docs = cursor.fetchone()[0]
+        # cursor.execute("""
+        #     SELECT COUNT(DISTINCT doc_id)
+        #     FROM processed_documents
+        #     WHERE dataset_name = ?
+        # """, (db_dataset_identifier,))
+        # processed_docs = cursor.fetchone()[0]
 
-        # التحقق من الإكمال الحقيقي
-        if processed_docs == total_docs:
-            print(
-                f"ℹ️ Dataset [{db_dataset_identifier.upper()}] already fully processed "
-                f"({processed_docs}/{total_docs})."
-            )
-            conn.close()
-            return
+        # # التحقق من الإكمال الحقيقي
+        # if processed_docs == total_docs:
+        #     print(
+        #         f"ℹ️ Dataset [{db_dataset_identifier.upper()}] already fully processed "
+        #         f"({processed_docs}/{total_docs})."
+        #     )
+        #     conn.close()
+        #     return
 
-        # إيجاد آخر نقطة معالجة فعلية للاستكمال
-        cursor.execute("""
-            SELECT COALESCE(MAX(d.id), 0)
-            FROM documents d
-            INNER JOIN processed_documents p
-                ON CAST(d.doc_id AS TEXT) = p.doc_id
-            WHERE d.dataset_name = ?
-              AND p.dataset_name = ?
-        """, (dataset_name, db_dataset_identifier))
+        # # إيجاد آخر نقطة معالجة فعلية للاستكمال
+        # cursor.execute("""
+        #     SELECT COALESCE(MAX(d.id), 0)
+        #     FROM documents d
+        #     INNER JOIN processed_documents p
+        #         ON CAST(d.doc_id AS TEXT) = p.doc_id
+        #     WHERE d.dataset_name = ?
+        #       AND p.dataset_name = ?
+        # """, (dataset_name, db_dataset_identifier))
 
-        resume_id = cursor.fetchone()[0]
+        # resume_id = cursor.fetchone()[0]
 
-        print(
-            f"▶ Resume Mode Active | "
-            f"Processed: {processed_docs}/{total_docs} | "
-            f"Starting from documents.id > {resume_id}"
-        )
+        # print(
+        #     f"▶ Resume Mode Active | "
+        #     f"Processed: {processed_docs}/{total_docs} | "
+        #     f"Starting from documents.id > {resume_id}"
+        # )
 
-        last_id = resume_id
-        # last_id = 0
+        # last_id = resume_id
+        last_id = 0
         processed_count = 0
         while True:
             # تطبيق مفهوم الـ Keyset Pagination (Seek Method) السريع لتجنب بطء OFFSET في الجداول الضخمة

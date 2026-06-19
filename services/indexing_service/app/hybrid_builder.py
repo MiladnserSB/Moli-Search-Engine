@@ -75,6 +75,7 @@ def build_hybrid_representation(dataset_name: str) -> dict:
     out_path = os.path.join(settings.MODELS_DIR, f"{dataset_name}_hybrid.joblib")
     
     print(f"\n[SAVE] Dumping hybrid vectors and SVD reducer model to disk at: {out_path}...")
+    dimensions = hybrid_vectors.shape[1] #اني ضفتها مشان الايرور تبع المتغير غير موجود في النطاق الحالي.
     save_start = time.time()
     joblib.dump({
         "hybrid_vectors": hybrid_vectors,
@@ -91,4 +92,6 @@ def build_hybrid_representation(dataset_name: str) -> dict:
     print(f"\n[SUCCESS] Hybrid Build completed in {elapsed_time:.2f} seconds.")
     print("="*60 + "\n")
     
-    return {"status": "success", "file": out_path, "dimensions": hybrid_vectors.shape[1]}
+    # return {"status": "success", "file": out_path, "dimensions": hybrid_vectors.shape[1]}
+
+    return {"status": "success", "file": out_path, "dimensions": dimensions} # حطينا dimensions مشان مشكلة المتغير غير موجود في النطاق الحالي.
