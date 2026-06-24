@@ -22,6 +22,7 @@ class QueryRequest(BaseModel):
 class SearchResponse(BaseModel):
     results: List[DocumentSchema]
     refined_query: Optional[str] = None
+    personalized_query: Optional[str] = None
     time_taken_ms: float
 
 class BatchQueryRequest(BaseModel):

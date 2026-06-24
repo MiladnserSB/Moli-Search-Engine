@@ -184,8 +184,29 @@
             class="refinement-banner"
             style="display: none"
           >
-            <span>Did you mean:</span>
-            <a href="#" id="suggested-query-link">...</a>
+            <!-- Did you mean / Spelling Correction -->
+            <div class="refine-row" id="spelling-correction-wrapper" style="display: none;">
+              <span class="refine-label">Did you mean:</span>
+              <a href="#" id="suggested-query-link" class="refine-link">...</a>
+            </div>
+            
+            <!-- Query Expansion -->
+            <div class="refine-row" id="query-expansion-wrapper" style="display: none;">
+              <span class="refine-label">Search expanded to:</span>
+              <span id="expanded-query-text" class="refine-text">...</span>
+            </div>
+            
+            <!-- Personalized Expansion (History-based) -->
+            <div class="refine-row" id="personalized-expansion-wrapper" style="display: none;">
+              <span class="refine-label">Personalized enhancement:</span>
+              <a href="#" id="personalized-query-link" class="refine-link">...</a>
+            </div>
+            
+            <!-- Alternative Queries -->
+            <div class="refine-row" id="alternative-queries-wrapper" style="display: none;">
+              <span class="refine-label">Related searches:</span>
+              <div id="alternative-queries-list" class="refine-alternatives-list"></div>
+            </div>
           </div>
         </section>
 

@@ -26,17 +26,31 @@ def search_documents(query_req: QueryRequest):
     try:
         query_text = query_req.query
         
+        # Log query to history database
+        try:
+            requests.post(
+                f"{settings.REFINEMENT_SERVICE_URL}/log",
+                json={"query": query_text, "dataset": query_req.dataset, "user_id": "default_user"},
+                timeout=1.0
+            )
+        except Exception as e:
+            print(f"Failed to log query to history service: {e}")
+            
         # Step 1: Query Refinement (if enabled)
         refined_query = query_text
+        personalized_query = None
         if query_req.use_additional_features:
             try:
                 refine_resp = requests.post(
                     f"{settings.REFINEMENT_SERVICE_URL}/refine",
-                    json={"query": query_text},
+                    json={"query": query_text, "dataset": query_req.dataset, "user_id": "default_user"},
                     timeout=2.0
                 )
                 if refine_resp.status_code == 200:
-                    refined_query = refine_resp.json().get("refined_query", query_text)
+                    refine_json = refine_resp.json()
+                    # Use corrected_query as refined_query so search runs on clean query
+                    refined_query = refine_json.get("corrected_query", query_text)
+                    personalized_query = refine_json.get("personalized_query", None)
             except Exception as e:
                 print(f"Refinement service unavailable: {e}")
         
@@ -105,6 +119,7 @@ def search_documents(query_req: QueryRequest):
             
         search_data = retrieval_resp.json()
         search_data["refined_query"] = refined_query
+        search_data["personalized_query"] = personalized_query
         
         return search_data
     except Exception as e:
@@ -219,6 +234,20 @@ def fetch_autocomplete(req: dict):
         )
         if resp.status_code != 200:
             raise HTTPException(status_code=resp.status_code, detail="Error during autocomplete fetch")
+        return resp.json()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/refine")
+def fetch_refinement(req: dict):
+    try:
+        resp = requests.post(
+            f"{settings.REFINEMENT_SERVICE_URL}/refine",
+            json=req,
+            timeout=10.0
+        )
+        if resp.status_code != 200:
+            raise HTTPException(status_code=resp.status_code, detail="Error during query refinement fetch")
         return resp.json()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

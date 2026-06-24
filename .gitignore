@@ -3,3 +3,4 @@ data/
 ir_datasets_cache/
 scripts/__pycache__/
 lectures/
+scripts/run_all_services

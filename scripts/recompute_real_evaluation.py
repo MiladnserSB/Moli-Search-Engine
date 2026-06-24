@@ -24,7 +24,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "s
 from services.evaluation_service.app.evaluator import IREvaluator
 
 DB_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "ir_dataset_store.db"))
-MODELS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "services", "indexing_service", "data", "models"))
+MODELS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "models"))
 CACHE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "evaluation_results.json"))
 
 def load_queries_and_qrels(dataset_name):

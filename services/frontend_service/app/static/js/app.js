@@ -35,6 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const valP10 = document.getElementById('val-p10');
     const valNdcg = document.getElementById('val-ndcg');
     
+    // Autocomplete Dropdown
+    const autocompleteDropdown = document.getElementById('autocomplete-dropdown');
+    
     // Refinement Link
     const refinementBanner = document.getElementById('query-refinement-banner');
     const suggestedQueryLink = document.getElementById('suggested-query-link');
@@ -90,10 +93,95 @@ document.addEventListener('DOMContentLoaded', () => {
         triggerSearch();
     });
 
+    // Handle personalized query click
+    const personalizedQueryLink = document.getElementById('personalized-query-link');
+    if (personalizedQueryLink) {
+        personalizedQueryLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            searchInput.value = personalizedQueryLink.textContent;
+            refinementBanner.style.display = 'none';
+            triggerSearch();
+        });
+    }
+
+    // Handle query expansion click
+    const expandedQueryText = document.getElementById('expanded-query-text');
+    if (expandedQueryText) {
+        expandedQueryText.style.cursor = 'pointer';
+        expandedQueryText.addEventListener('click', () => {
+            searchInput.value = expandedQueryText.textContent;
+            refinementBanner.style.display = 'none';
+            triggerSearch();
+        });
+    }
+
     // Event listener for search
-    searchBtn.addEventListener('click', triggerSearch);
+    searchBtn.addEventListener('click', () => {
+        autocompleteDropdown.style.display = 'none';
+        triggerSearch();
+    });
     searchInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') triggerSearch();
+        if (e.key === 'Enter') {
+            autocompleteDropdown.style.display = 'none';
+            triggerSearch();
+        }
+    });
+
+    // Autocomplete input listener
+    searchInput.addEventListener('input', async () => {
+        const query = searchInput.value.trim();
+        if (query.length < 2) {
+            autocompleteDropdown.style.display = 'none';
+            return;
+        }
+
+        try {
+            const response = await fetch(`${GATEWAY_URL}/api/autocomplete`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    prefix: query,
+                    dataset: datasetSelect.value,
+                    user_id: 'default_user'
+                })
+            });
+
+            if (!response.ok) return;
+            const data = await response.json();
+            const suggestions = data.suggestions || [];
+
+            if (suggestions.length === 0) {
+                autocompleteDropdown.style.display = 'none';
+                return;
+            }
+
+            autocompleteDropdown.innerHTML = '';
+            suggestions.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'autocomplete-item';
+                
+                // Show clock for history, search glass for new terms
+                const icon = item.is_history ? '🕒' : '🔍';
+                div.innerHTML = `<span class="autocomplete-icon" style="margin-right: 8px; opacity: 0.6;">${icon}</span><span class="autocomplete-text">${item.text}</span>`;
+                
+                div.addEventListener('click', () => {
+                    searchInput.value = item.text;
+                    autocompleteDropdown.style.display = 'none';
+                    triggerSearch();
+                });
+                autocompleteDropdown.appendChild(div);
+            });
+            autocompleteDropdown.style.display = 'block';
+        } catch (err) {
+            console.error('Error fetching autocomplete suggestions:', err);
+        }
+    });
+
+    // Close autocomplete when clicking outside
+    document.addEventListener('click', (e) => {
+        if (e.target !== searchInput && e.target !== autocompleteDropdown) {
+            autocompleteDropdown.style.display = 'none';
+        }
     });
 
     // Perform Search Action
@@ -116,6 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
             top_k: 10
         };
 
+        // If advanced features are enabled, fetch spelling correction, expansion, and alternatives
+        if (additionalFeaturesChk.checked) {
+            fetchQueryRefinement(query);
+        }
+
         try {
             const response = await fetch(`${GATEWAY_URL}/api/search`, {
                 method: 'POST',
@@ -133,13 +226,95 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Parallel fetch of detailed query refinement metrics
+    async function fetchQueryRefinement(query) {
+        try {
+            const response = await fetch(`${GATEWAY_URL}/api/refine`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    query: query,
+                    dataset: datasetSelect.value,
+                    user_id: 'default_user'
+                })
+            });
+            if (!response.ok) return;
+
+            const data = await response.json();
+            
+            // 1. Spelling Correction (Did you mean?)
+            const spellingWrapper = document.getElementById('spelling-correction-wrapper');
+            if (data.corrected_query && data.corrected_query.toLowerCase() !== query.toLowerCase()) {
+                suggestedQueryLink.textContent = data.corrected_query;
+                spellingWrapper.style.display = 'flex';
+            } else {
+                spellingWrapper.style.display = 'none';
+            }
+
+            // 2. Query Expansion
+            const expansionWrapper = document.getElementById('query-expansion-wrapper');
+            const targetCompare = data.corrected_query || query;
+            if (data.expanded_query && data.expanded_query.toLowerCase() !== targetCompare.toLowerCase()) {
+                document.getElementById('expanded-query-text').textContent = data.expanded_query;
+                expansionWrapper.style.display = 'flex';
+            } else {
+                expansionWrapper.style.display = 'none';
+            }
+
+            // 2b. Personalized Query Expansion (History-based)
+            const personalizedWrapper = document.getElementById('personalized-expansion-wrapper');
+            const personalizedLink = document.getElementById('personalized-query-link');
+            const baseExpandedCompare = data.expanded_query || targetCompare;
+            if (personalizedWrapper && personalizedLink) {
+                if (data.personalized_query && data.personalized_query.toLowerCase() !== baseExpandedCompare.toLowerCase()) {
+                    personalizedLink.textContent = data.personalized_query;
+                    personalizedWrapper.style.display = 'flex';
+                } else {
+                    personalizedWrapper.style.display = 'none';
+                }
+            }
+
+            // 3. Alternative Queries
+            const alternativeWrapper = document.getElementById('alternative-queries-wrapper');
+            const alternativeList = document.getElementById('alternative-queries-list');
+            if (data.alternative_queries && data.alternative_queries.length > 0) {
+                alternativeList.innerHTML = '';
+                data.alternative_queries.forEach(alt => {
+                    const btn = document.createElement('a');
+                    btn.href = '#';
+                    btn.className = 'refine-alternative-btn';
+                    btn.textContent = alt;
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        searchInput.value = alt;
+                        triggerSearch();
+                    });
+                    alternativeList.appendChild(btn);
+                });
+                alternativeWrapper.style.display = 'flex';
+            } else {
+                alternativeWrapper.style.display = 'none';
+            }
+
+            // Show banner if any item is visible
+            const isPersonalizedVisible = personalizedWrapper && personalizedWrapper.style.display === 'flex';
+            if (spellingWrapper.style.display === 'flex' || 
+                expansionWrapper.style.display === 'flex' || 
+                isPersonalizedVisible ||
+                alternativeWrapper.style.display === 'flex') {
+                refinementBanner.style.display = 'block';
+            } else {
+                refinementBanner.style.display = 'none';
+            }
+        } catch (err) {
+            console.error('Error fetching query refinement:', err);
+        }
+    }
+
     // Render results in HTML
     function renderResults(data) {
-        // Did you mean? spelling corrections check
-        if (data.refined_query && data.refined_query.toLowerCase() !== searchInput.value.trim().toLowerCase()) {
-            suggestedQueryLink.textContent = data.refined_query;
-            refinementBanner.style.display = 'block';
-        } else {
+        // Clear old refinement banner if not using advanced features
+        if (!additionalFeaturesChk.checked) {
             refinementBanner.style.display = 'none';
         }
 

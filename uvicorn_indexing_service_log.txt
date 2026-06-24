@@ -1,4 +1,4 @@
-INFO:     Started server process [6344]
+INFO:     Started server process [22712]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
@@ -14,4 +14,4 @@ INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
    -> Caching Hybrid vectors for lotte_lifestyle_dev...
    -> Caching Inverted Index for lotte_lifestyle_dev...
 [OK] Pre-loading and caching of models complete.
-INFO:     127.0.0.1:48126 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32860 - "GET /health HTTP/1.1" 200 OK

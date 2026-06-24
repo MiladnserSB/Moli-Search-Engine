@@ -64,7 +64,7 @@ body {
 }
 .brand {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     margin-bottom: 2.5rem;
     padding-bottom: 1.5rem;
@@ -310,18 +310,64 @@ body {
     box-shadow: 0 4px 12px rgba(0, 36, 86, 0.25);
 }
 .refinement-banner {
-    margin-top: 0.75rem;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    padding-left: 1rem;
+    margin-top: 1rem;
+    padding: 1.25rem;
+    background: rgba(0, 36, 86, 0.04);
+    border-left: 4px solid var(--sky-blue);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-sm);
 }
-.refinement-banner a {
+.refine-row {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.refine-row:last-child {
+    margin-bottom: 0;
+}
+.refine-label {
+    font-weight: 600;
+    color: var(--navy-blue);
+}
+.refine-text {
+    color: var(--text-primary);
+    font-style: italic;
+}
+.refine-link {
     color: var(--sky-blue);
     text-decoration: none;
     font-weight: 700;
+    cursor: pointer;
+    transition: color 0.2s ease;
 }
-.refinement-banner a:hover {
+.refine-link:hover {
     text-decoration: underline;
+    color: var(--navy-blue);
+}
+.refine-alternatives-list {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.refine-alternative-btn {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: var(--navy-blue);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    font-weight: 500;
+}
+.refine-alternative-btn:hover {
+    background: var(--sky-blue);
+    color: white;
+    border-color: var(--sky-blue);
 }
 /* Search Results Area */
 .results-container {
