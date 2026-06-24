@@ -1,6 +1,6 @@
-c:\Users\USER\Desktop\fifth year\æÙÇÆİ æãÔÇÑíÚ ÇáÌÇãÚÉ\IR\IR-Project\Moli-Search-Engine\services\query_refinement_service\app\refiner.py:3: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+c:\Users\st\Desktop\Moli-Search-Engine\services\query_refinement_service\app\refiner.py:3: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
   import pkg_resources
-INFO:     Started server process [22372]
+INFO:     Started server process [21952]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8006 (Press CTRL+C to quit)
@@ -9,4 +9,5 @@ INFO:     Uvicorn running on http://127.0.0.1:8006 (Press CTRL+C to quit)
 [QueryRefiner] Loading autocomplete terms for quora_dev...
 [Startup] Warming up autocomplete cache for lotte_lifestyle_dev...
 [QueryRefiner] Loading autocomplete terms for lotte_lifestyle_dev...
-INFO:     127.0.0.1:48140 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55883 - "GET /health HTTP/1.1" 200 OK
+INFO:     Shutting down

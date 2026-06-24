@@ -1,4 +1,4 @@
-INFO:     Started server process [23172]
+INFO:     Started server process [11080]
 INFO:     Waiting for application startup.
 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
 --- [Startup] Preloading all search indexes and models into RAM (8 GB RAM compliant) ---
@@ -10,7 +10,7 @@ Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF
 [Startup] Preloading quora_dev | embedding...
 [ModelManager] Loading BERT embeddings for quora_dev...
 [ModelManager] Loading SentenceTransformer model 'all-MiniLM-L6-v2'...
-Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|##########| 103/103 [00:00<00:00, 3469.46it/s]
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|##########| 103/103 [00:00<00:00, 4793.86it/s]
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8003 (Press CTRL+C to quit)
 [Startup] Preloading lotte_lifestyle_dev | bm25...
@@ -21,7 +21,12 @@ INFO:     Uvicorn running on http://127.0.0.1:8003 (Press CTRL+C to quit)
 [Startup] Preloading lotte_lifestyle_dev | embedding...
 [ModelManager] Loading BERT embeddings for lotte_lifestyle_dev...
 --- [Startup] Preloading complete! Retrieval Service is fully warmed up ---
-INFO:     127.0.0.1:48137 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43992 - "POST /search HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44005 - "POST /search HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44035 - "POST /search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55880 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63671 - "POST /search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63673 - "POST /search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64830 - "POST /search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60584 - "POST /search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56819 - "POST /search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58526 - "POST /search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50064 - "POST /search HTTP/1.1" 200 OK
+INFO:     Shutting down

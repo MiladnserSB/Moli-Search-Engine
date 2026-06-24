@@ -1,13 +1,14 @@
-INFO:     Started server process [10344]
+INFO:     Started server process [9096]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-INFO:     127.0.0.1:48074 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43990 - "OPTIONS /api/search HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43990 - "POST /api/search HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43996 - "OPTIONS /api/evaluate HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43996 - "POST /api/evaluate HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44001 - "POST /api/evaluate HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44003 - "POST /api/search HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44010 - "POST /api/evaluate HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44033 - "POST /api/search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50665 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58110 - "OPTIONS /api/search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58110 - "POST /api/search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63669 - "POST /api/search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64828 - "POST /api/search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60582 - "POST /api/search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56814 - "POST /api/search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58523 - "POST /api/search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50061 - "POST /api/search HTTP/1.1" 200 OK
+INFO:     Shutting down

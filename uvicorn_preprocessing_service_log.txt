@@ -1,25 +1,12 @@
-c:\Users\USER\Desktop\fifth year\وظائف ومشاريع الجامعة\IR\IR-Project\Moli-Search-Engine\services\preprocessing_service\app\core\spell_checker.py:61: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+c:\Users\st\Desktop\Moli-Search-Engine\services\preprocessing_service\app\core\spell_checker.py:61: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
   import pkg_resources
-INFO:     Started server process [14272]
+INFO:     Started server process [22864]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
 Milad was here
 🚀 Preprocessing Microservice Ready For Operations.
-INFO:     127.0.0.1:48086 - "GET /health HTTP/1.1" 200 OK
-
---- [PIPELINE ACTIVE | MODE: CLASSICAL | DATASET: QUERY] ---
-   Step 1 (Normalization) Duration: 0.0024 seconds
-   Step 2 (Tokenization) Duration: 0.0010 seconds
--> Step 4: Compiling Optimized Snowball Stemming...
-   Step 4 (Stemming) Duration: 0.0057 seconds
-
-   [PERFORMANCE SUMMARY FOR DATASET: QUERY]
-   BEFORE: 'car...'
-   AFTER : 'car...'
-   TOTAL ELAPSED TIME: 0.0092 seconds
---------------------------------------------------
-INFO:     127.0.0.1:43991 - "POST /preprocess HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55793 - "GET /health HTTP/1.1" 200 OK
 
 --- [PIPELINE ACTIVE | MODE: CLASSICAL | DATASET: QUERY] ---
    Step 1 (Normalization) Duration: 0.0000 seconds
@@ -28,11 +15,11 @@ INFO:     127.0.0.1:43991 - "POST /preprocess HTTP/1.1" 200 OK
    Step 4 (Stemming) Duration: 0.0000 seconds
 
    [PERFORMANCE SUMMARY FOR DATASET: QUERY]
-   BEFORE: 'car...'
-   AFTER : 'car...'
+   BEFORE: 'skin...'
+   AFTER : 'skin...'
    TOTAL ELAPSED TIME: 0.0000 seconds
 --------------------------------------------------
-INFO:     127.0.0.1:44004 - "POST /preprocess HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63670 - "POST /preprocess HTTP/1.1" 200 OK
 
 --- [PIPELINE ACTIVE | MODE: CLASSICAL | DATASET: QUERY] ---
    Step 1 (Normalization) Duration: 0.0000 seconds
@@ -41,8 +28,88 @@ INFO:     127.0.0.1:44004 - "POST /preprocess HTTP/1.1" 200 OK
    Step 4 (Stemming) Duration: 0.0000 seconds
 
    [PERFORMANCE SUMMARY FOR DATASET: QUERY]
-   BEFORE: 'car erors...'
-   AFTER : 'car eror...'
+   BEFORE: 'skincare...'
+   AFTER : 'skincar...'
    TOTAL ELAPSED TIME: 0.0000 seconds
 --------------------------------------------------
-INFO:     127.0.0.1:44034 - "POST /preprocess HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63672 - "POST /preprocess HTTP/1.1" 200 OK
+
+--- [PIPELINE ACTIVE | MODE: CLASSICAL | DATASET: QUERY] ---
+   Step 1 (Normalization) Duration: 0.0000 seconds
+   Step 2 (Tokenization) Duration: 0.0000 seconds
+-> Step 4: Compiling Optimized Snowball Stemming...
+   Step 4 (Stemming) Duration: 0.0000 seconds
+
+   [PERFORMANCE SUMMARY FOR DATASET: QUERY]
+   BEFORE: 'skincare...'
+   AFTER : 'skincar...'
+   TOTAL ELAPSED TIME: 0.0008 seconds
+--------------------------------------------------
+INFO:     127.0.0.1:64829 - "POST /preprocess HTTP/1.1" 200 OK
+
+--- [PIPELINE ACTIVE | MODE: CLASSICAL | DATASET: QUERY] ---
+   Step 1 (Normalization) Duration: 0.0000 seconds
+   Step 2 (Tokenization) Duration: 0.0000 seconds
+-> Step 4: Compiling Optimized Snowball Stemming...
+   Step 4 (Stemming) Duration: 0.0000 seconds
+
+   [PERFORMANCE SUMMARY FOR DATASET: QUERY]
+   BEFORE: 'skincare...'
+   AFTER : 'skincar...'
+   TOTAL ELAPSED TIME: 0.0000 seconds
+--------------------------------------------------
+INFO:     127.0.0.1:60583 - "POST /preprocess HTTP/1.1" 200 OK
+
+--- [PIPELINE ACTIVE | MODE: CLASSICAL | DATASET: QUERY] ---
+   Step 1 (Normalization) Duration: 0.0000 seconds
+   Step 2 (Tokenization) Duration: 0.0000 seconds
+-> Step 4: Compiling Optimized Snowball Stemming...
+   Step 4 (Stemming) Duration: 0.0000 seconds
+
+   [PERFORMANCE SUMMARY FOR DATASET: QUERY]
+   BEFORE: 'skincare...'
+   AFTER : 'skincar...'
+   TOTAL ELAPSED TIME: 0.0000 seconds
+--------------------------------------------------
+INFO:     127.0.0.1:56815 - "POST /preprocess HTTP/1.1" 200 OK
+
+--- [PIPELINE ACTIVE | MODE: CLASSICAL | DATASET: QUERY] ---
+   Step 1 (Normalization) Duration: 0.0000 seconds
+   Step 2 (Tokenization) Duration: 0.0000 seconds
+-> Step 4: Compiling Optimized Snowball Stemming...
+   Step 4 (Stemming) Duration: 0.0000 seconds
+
+   [PERFORMANCE SUMMARY FOR DATASET: QUERY]
+   BEFORE: 'skincare...'
+   AFTER : 'skincar...'
+   TOTAL ELAPSED TIME: 0.0000 seconds
+--------------------------------------------------
+INFO:     127.0.0.1:58524 - "POST /preprocess HTTP/1.1" 200 OK
+
+--- [PIPELINE ACTIVE | MODE: NEURAL | DATASET: QUERY] ---
+-> Processing Neural Path: Preserving syntax, casing, and stopwords...
+   [NEURAL BYPASS COMPLETE] Token count: 1
+   TOTAL ELAPSED TIME: 0.0000 seconds
+--------------------------------------------------
+INFO:     127.0.0.1:58525 - "POST /preprocess HTTP/1.1" 200 OK
+
+--- [PIPELINE ACTIVE | MODE: CLASSICAL | DATASET: QUERY] ---
+   Step 1 (Normalization) Duration: 0.0000 seconds
+   Step 2 (Tokenization) Duration: 0.0000 seconds
+-> Step 4: Compiling Optimized Snowball Stemming...
+   Step 4 (Stemming) Duration: 0.0000 seconds
+
+   [PERFORMANCE SUMMARY FOR DATASET: QUERY]
+   BEFORE: 'skincare...'
+   AFTER : 'skincar...'
+   TOTAL ELAPSED TIME: 0.0000 seconds
+--------------------------------------------------
+INFO:     127.0.0.1:50062 - "POST /preprocess HTTP/1.1" 200 OK
+
+--- [PIPELINE ACTIVE | MODE: NEURAL | DATASET: QUERY] ---
+-> Processing Neural Path: Preserving syntax, casing, and stopwords...
+   [NEURAL BYPASS COMPLETE] Token count: 1
+   TOTAL ELAPSED TIME: 0.0008 seconds
+--------------------------------------------------
+INFO:     127.0.0.1:50063 - "POST /preprocess HTTP/1.1" 200 OK
+INFO:     Shutting down
