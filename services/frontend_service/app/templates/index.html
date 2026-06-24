@@ -210,8 +210,14 @@
           </div>
         </section>
 
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+          <button type="button" id="tab-search" class="nav-tab active">🔍 Search Results</button>
+          <button type="button" id="tab-clustering" class="nav-tab">📊 Clustering Analysis</button>
+        </div>
+
         <!-- Results Section -->
-        <section class="results-container">
+        <section class="results-container" id="search-results-section">
           <div class="results-metadata" id="results-count-meta"></div>
 
           <div id="search-results-list" class="results-list">
@@ -233,6 +239,26 @@
           </div>
         </section>
 
+        <!-- Clustering Section -->
+        <section class="results-container" id="clustering-section" style="display: none;">
+          <div class="clustering-header">
+            <h2>Document Clustering using K-Means</h2>
+            <p class="subtitle">PCA Component 1 vs PCA Component 2</p>
+          </div>
+          
+          <div class="clustering-chart-wrapper">
+            <canvas id="clusteringChart"></canvas>
+          </div>
+          
+          <div class="cluster-cards-wrapper">
+            <h3>Sample Documents per Cluster</h3>
+            <div id="cluster-cards-container" class="clustering-grid">
+              <!-- Cluster columns will be dynamically injected here -->
+            </div>
+            <p class="clustering-caption">Documents in the same cluster are more similar to each other.</p>
+          </div>
+        </section>
+
         <!-- Evaluation Dashboard Section -->
         <section
           class="evaluation-section"
@@ -250,19 +276,39 @@
             <div class="metrics-cards">
               <div class="metric-card">
                 <span class="metric-title">MAP</span>
-                <span class="metric-value" id="val-map">-</span>
+                <div class="metric-comparison">
+                  <span class="metric-base" id="base-map">-</span>
+                  <span class="metric-arrow">→</span>
+                  <span class="metric-value" id="val-map">-</span>
+                </div>
+                <span class="metric-improvement" id="improve-map"></span>
               </div>
               <div class="metric-card">
                 <span class="metric-title">Recall</span>
-                <span class="metric-value" id="val-recall">-</span>
+                <div class="metric-comparison">
+                  <span class="metric-base" id="base-recall">-</span>
+                  <span class="metric-arrow">→</span>
+                  <span class="metric-value" id="val-recall">-</span>
+                </div>
+                <span class="metric-improvement" id="improve-recall"></span>
               </div>
               <div class="metric-card">
                 <span class="metric-title">Precision@10</span>
-                <span class="metric-value" id="val-p10">-</span>
+                <div class="metric-comparison">
+                  <span class="metric-base" id="base-p10">-</span>
+                  <span class="metric-arrow">→</span>
+                  <span class="metric-value" id="val-p10">-</span>
+                </div>
+                <span class="metric-improvement" id="improve-p10"></span>
               </div>
               <div class="metric-card">
                 <span class="metric-title">nDCG</span>
-                <span class="metric-value" id="val-ndcg">-</span>
+                <div class="metric-comparison">
+                  <span class="metric-base" id="base-ndcg">-</span>
+                  <span class="metric-arrow">→</span>
+                  <span class="metric-value" id="val-ndcg">-</span>
+                </div>
+                <span class="metric-improvement" id="improve-ndcg"></span>
               </div>
             </div>
           </div>
@@ -274,6 +320,6 @@
     <script>
       const GATEWAY_URL = "http://127.0.0.1:8000";
     </script>
-    <script src="/static/js/app.js"></script>
+    <script src="/static/js/app.js?v=2.0"></script>
   </body>
 </html>

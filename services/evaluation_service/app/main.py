@@ -72,9 +72,17 @@ def evaluate_results(request: EvaluationRequest):
         # Determine subset of queries to evaluate
         qids = list(queries.keys())
         if is_dynamic:
-            # Subset queries to 200 to ensure real evaluation completes under 10 seconds
-            qids = qids[:200]
-            print(f"[Evaluation] Dynamic evaluation triggered. Subsetting to first {len(qids)} queries for <10s performance.")
+            if db_dataset == "lotte_lifestyle_dev":
+                # Lotte lifestyle has only ~1000 queries, which runs in <10 seconds for all models
+                pass
+            else: # quora_dev (5000 queries)
+                if method in ['vsm', 'bm25']:
+                    # Classical VSM and BM25 run extremely fast (matrix math) - evaluate all 5000 queries
+                    pass
+                else:
+                    # Neural/Hybrid models on CPU: subset to 500 queries for faster dynamic responses
+                    qids = qids[:500]
+                    print(f"[Evaluation] Dynamic neural evaluation on Quora. Subsetting to first {len(qids)} queries for <10s performance.")
             
         # Filter qrels to match the query subset
         filtered_qrels = {qid: qrels[qid] for qid in qids if qid in qrels}

@@ -205,6 +205,46 @@ def search_documents(request: QueryRequest):
         raw_results = []
         inverted_idx = model_manager.index_cache.get(dataset)
         
+        # Precompute embedding with history-based vector fusion if needed
+        query_emb = None
+        fused_info = None
+        if method in ['embedding', 'hybrid_serial', 'hybrid_parallel']:
+            import numpy as np
+            query_emb = bert_model.encode(request.query, convert_to_numpy=True, normalize_embeddings=True)
+            query_emb = query_emb.astype('float32')
+            
+            if request.use_additional_features:
+                user_id = request.user_id or "default_user"
+                try:
+                    conn = sqlite3.connect(settings.DB_PATH)
+                    cursor = conn.cursor()
+                    cursor.execute('''
+                        SELECT DISTINCT query FROM search_history 
+                        WHERE user_id = ? AND dataset_name = ?
+                        ORDER BY timestamp DESC LIMIT 5
+                    ''', (user_id, dataset))
+                    rows = cursor.fetchall()
+                    conn.close()
+                    
+                    history_queries = [row[0] for row in rows if row[0].strip().lower() != request.query.strip().lower()]
+                    if history_queries:
+                        history_embs = [bert_model.encode(hq, convert_to_numpy=True, normalize_embeddings=True) for hq in history_queries]
+                        user_interest_vector = np.mean(history_embs, axis=0)
+                        user_interest_vector = user_interest_vector / np.linalg.norm(user_interest_vector)
+                        
+                        fusion_alpha = 0.7
+                        query_emb = fusion_alpha * query_emb + (1.0 - fusion_alpha) * user_interest_vector
+                        query_emb = query_emb / np.linalg.norm(query_emb)
+                        query_emb = query_emb.astype('float32')
+                        
+                        fused_info = {
+                            "historical_queries": history_queries,
+                            "alpha": fusion_alpha
+                        }
+                        print(f"[VectorFusion] Query vector fused with user interests from history: {history_queries}")
+                except Exception as ex:
+                    print(f"[VectorFusion] Error during history vector fusion: {ex}")
+        
         if method == 'vsm':
             raw_results = searcher.search(request.query, top_k=request.top_k, inverted_index=inverted_idx)
         elif method == 'bm25':
@@ -217,14 +257,10 @@ def search_documents(request: QueryRequest):
                 inverted_index=inverted_idx
             )
         elif method == 'embedding':
-            query_emb = bert_model.encode(request.query, convert_to_numpy=True, normalize_embeddings=True)
-            query_emb = query_emb.astype('float32')
             raw_results = searcher.search(query_emb, top_k=request.top_k)
         elif method == 'hybrid_serial':
             bm25_query = request.preprocessed_query if request.preprocessed_query else request.query
             query_tokens = bm25_query.split()
-            query_emb = bert_model.encode(request.query, convert_to_numpy=True, normalize_embeddings=True)
-            query_emb = query_emb.astype('float32')
             # serial: sparse candidates, then dense rerank
             # BM25 parameter overrides are applied inside the cached searcher if given
             bm25_searcher = model_manager.bm25_cache.get(dataset)
@@ -237,8 +273,6 @@ def search_documents(request: QueryRequest):
         elif method == 'hybrid_parallel':
             bm25_query = request.preprocessed_query if request.preprocessed_query else request.query
             query_tokens = bm25_query.split()
-            query_emb = bert_model.encode(request.query, convert_to_numpy=True, normalize_embeddings=True)
-            query_emb = query_emb.astype('float32')
             # parallel: sparse + dense, combined with RRF
             bm25_searcher = model_manager.bm25_cache.get(dataset)
             if bm25_searcher:
@@ -256,6 +290,7 @@ def search_documents(request: QueryRequest):
             return {
                 "results": [],
                 "refined_query": request.query,
+                "personalized_fusion_info": fused_info,
                 "time_taken_ms": time_taken_ms
             }
             
@@ -276,6 +311,7 @@ def search_documents(request: QueryRequest):
             return {
                 "results": [r.model_dump() for r in results],
                 "refined_query": request.query,
+                "personalized_fusion_info": fused_info,
                 "time_taken_ms": time_taken_ms
             }
             
@@ -307,6 +343,7 @@ def search_documents(request: QueryRequest):
         return {
             "results": [r.model_dump() for r in results],
             "refined_query": request.query,
+            "personalized_fusion_info": fused_info,
             "time_taken_ms": time_taken_ms
         }
     except Exception as e:

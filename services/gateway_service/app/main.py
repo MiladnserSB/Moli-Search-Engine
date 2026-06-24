@@ -25,82 +25,86 @@ def health_check():
 def search_documents(query_req: QueryRequest):
     try:
         query_text = query_req.query
+        user_id = query_req.user_id or "default_user"
         
         # Log query to history database
         try:
             requests.post(
                 f"{settings.REFINEMENT_SERVICE_URL}/log",
-                json={"query": query_text, "dataset": query_req.dataset, "user_id": "default_user"},
+                json={"query": query_text, "dataset": query_req.dataset, "user_id": user_id},
                 timeout=1.0
             )
         except Exception as e:
             print(f"Failed to log query to history service: {e}")
             
-        # Step 1: Query Refinement (if enabled)
+        # Step 1: Query Refinement (Always Enabled)
         refined_query = query_text
         personalized_query = None
-        if query_req.use_additional_features:
-            try:
-                refine_resp = requests.post(
-                    f"{settings.REFINEMENT_SERVICE_URL}/refine",
-                    json={"query": query_text, "dataset": query_req.dataset, "user_id": "default_user"},
-                    timeout=2.0
-                )
-                if refine_resp.status_code == 200:
-                    refine_json = refine_resp.json()
-                    # Use corrected_query as refined_query so search runs on clean query
-                    refined_query = refine_json.get("corrected_query", query_text)
-                    personalized_query = refine_json.get("personalized_query", None)
-            except Exception as e:
-                print(f"Refinement service unavailable: {e}")
+        try:
+            refine_resp = requests.post(
+                f"{settings.REFINEMENT_SERVICE_URL}/refine",
+                json={"query": query_text, "dataset": query_req.dataset, "user_id": user_id},
+                timeout=2.0
+            )
+            if refine_resp.status_code == 200:
+                refine_json = refine_resp.json()
+                refined_query = refine_json.get("corrected_query", query_text)
+                personalized_query = refine_json.get("personalized_query", None)
+        except Exception as e:
+            print(f"Refinement service unavailable: {e}")
         
         # Step 2: Text Preprocessing
         method = query_req.method.lower()
-        preprocessed_query = refined_query
+        
+        # Decide which base text to preprocess
+        # VSM/BM25 uses keyword-expanded personalized_query.
+        # Neural/Hybrid uses spelling-corrected refined_query (vector fusion handles history).
+        target_query_classical = refined_query
+        target_query_neural = refined_query
+        
+        if query_req.use_additional_features and personalized_query:
+            target_query_classical = personalized_query
+            
+        preprocessed_query = target_query_neural
         preprocessed_query_classical = None
         
         try:
             if method in ['vsm', 'bm25']:
-                # Classical preprocessing (stemming & lemmatization to match indices)
                 prep_resp = requests.post(
                     f"{settings.PREPROCESSING_SERVICE_URL}/preprocess",
-                    json={"text": refined_query, "stem": True, "lemmatize": True, "pipeline_type": "classical"},
+                    json={"text": target_query_classical, "stem": True, "lemmatize": True, "pipeline_type": "classical"},
                     timeout=2.0
                 )
                 if prep_resp.status_code == 200:
-                    preprocessed_query = prep_resp.json().get("processed_text", refined_query)
+                    preprocessed_query = prep_resp.json().get("processed_text", target_query_classical)
             elif method == 'embedding':
-                # Neural preprocessing (preserves casing/stopwords for BERT)
                 prep_resp = requests.post(
                     f"{settings.PREPROCESSING_SERVICE_URL}/preprocess",
-                    json={"text": refined_query, "stem": False, "lemmatize": False, "pipeline_type": "neural"},
+                    json={"text": target_query_neural, "stem": False, "lemmatize": False, "pipeline_type": "neural"},
                     timeout=2.0
                 )
                 if prep_resp.status_code == 200:
-                    preprocessed_query = prep_resp.json().get("processed_text", refined_query)
+                    preprocessed_query = prep_resp.json().get("processed_text", target_query_neural)
             elif method in ['hybrid_serial', 'hybrid_parallel']:
-                # Hybrid needs both: classical for BM25 and neural/raw for BERT
-                # 1. Classical
                 prep_resp_c = requests.post(
                     f"{settings.PREPROCESSING_SERVICE_URL}/preprocess",
-                    json={"text": refined_query, "stem": True, "lemmatize": True, "pipeline_type": "classical"},
+                    json={"text": target_query_classical, "stem": True, "lemmatize": True, "pipeline_type": "classical"},
                     timeout=2.0
                 )
                 if prep_resp_c.status_code == 200:
-                    preprocessed_query_classical = prep_resp_c.json().get("processed_text", refined_query)
+                    preprocessed_query_classical = prep_resp_c.json().get("processed_text", target_query_classical)
                 
-                # 2. Neural
                 prep_resp_n = requests.post(
                     f"{settings.PREPROCESSING_SERVICE_URL}/preprocess",
-                    json={"text": refined_query, "stem": False, "lemmatize": False, "pipeline_type": "neural"},
+                    json={"text": target_query_neural, "stem": False, "lemmatize": False, "pipeline_type": "neural"},
                     timeout=2.0
                 )
                 if prep_resp_n.status_code == 200:
-                    preprocessed_query = prep_resp_n.json().get("processed_text", refined_query)
+                    preprocessed_query = prep_resp_n.json().get("processed_text", target_query_neural)
         except Exception as e:
             print(f"Preprocessing service unavailable: {e}")
             if method in ['hybrid_serial', 'hybrid_parallel']:
-                preprocessed_query_classical = preprocessed_query_classical or refined_query
+                preprocessed_query_classical = preprocessed_query_classical or target_query_classical
             
         # Step 3: Retrieval
         retrieval_payload = query_req.model_dump()
@@ -220,6 +224,19 @@ def build_clusters(cluster_req: ClusteringRequest):
         )
         if resp.status_code != 200:
             raise HTTPException(status_code=resp.status_code, detail="Error starting clustering")
+        return resp.json()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/cluster/plot/{dataset}/{num_clusters}")
+def get_cluster_plot(dataset: str, num_clusters: int):
+    try:
+        resp = requests.get(
+            f"{settings.CLUSTERING_SERVICE_URL}/cluster/plot/{dataset}/{num_clusters}",
+            timeout=30.0
+        )
+        if resp.status_code != 200:
+            raise HTTPException(status_code=resp.status_code, detail="Error retrieving clustering plot data")
         return resp.json()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

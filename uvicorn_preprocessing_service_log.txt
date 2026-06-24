@@ -1,35 +1,9 @@
 c:\Users\USER\Desktop\fifth year\وظائف ومشاريع الجامعة\IR\IR-Project\Moli-Search-Engine\services\preprocessing_service\app\core\spell_checker.py:61: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
   import pkg_resources
-INFO:     Started server process [19860]
+INFO:     Started server process [9808]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
 Milad was here
 🚀 Preprocessing Microservice Ready For Operations.
-INFO:     127.0.0.1:32816 - "GET /health HTTP/1.1" 200 OK
-
---- [PIPELINE ACTIVE | MODE: CLASSICAL | DATASET: QUERY] ---
-   Step 1 (Normalization) Duration: 0.0020 seconds
-   Step 2 (Tokenization) Duration: 0.0010 seconds
--> Step 4: Compiling Optimized Snowball Stemming...
-   Step 4 (Stemming) Duration: 0.0082 seconds
-
-   [PERFORMANCE SUMMARY FOR DATASET: QUERY]
-   BEFORE: 'car every where...'
-   AFTER : 'car everi...'
-   TOTAL ELAPSED TIME: 0.0121 seconds
---------------------------------------------------
-INFO:     127.0.0.1:32907 - "POST /preprocess HTTP/1.1" 200 OK
-
---- [PIPELINE ACTIVE | MODE: CLASSICAL | DATASET: QUERY] ---
-   Step 1 (Normalization) Duration: 0.0000 seconds
-   Step 2 (Tokenization) Duration: 0.0000 seconds
--> Step 4: Compiling Optimized Snowball Stemming...
-   Step 4 (Stemming) Duration: 0.0000 seconds
-
-   [PERFORMANCE SUMMARY FOR DATASET: QUERY]
-   BEFORE: 'bike...'
-   AFTER : 'bike...'
-   TOTAL ELAPSED TIME: 0.0000 seconds
---------------------------------------------------
-INFO:     127.0.0.1:32967 - "POST /preprocess HTTP/1.1" 200 OK
+INFO:     127.0.0.1:2942 - "GET /health HTTP/1.1" 200 OK

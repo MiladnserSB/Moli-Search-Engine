@@ -204,10 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
             top_k: 10
         };
 
-        // If advanced features are enabled, fetch spelling correction, expansion, and alternatives
-        if (additionalFeaturesChk.checked) {
-            fetchQueryRefinement(query);
-        }
+        // Fetch spelling correction, expansion, and alternatives (always-on query refinement)
+        fetchQueryRefinement(query);
 
         try {
             const response = await fetch(`${GATEWAY_URL}/api/search`, {
@@ -313,11 +311,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render results in HTML
     function renderResults(data) {
-        // Clear old refinement banner if not using advanced features
-        if (!additionalFeaturesChk.checked) {
-            refinementBanner.style.display = 'none';
-        }
-
         resultsCountMeta.textContent = `Found ${data.results.length} documents in ${data.time_taken_ms.toFixed(2)} ms`;
 
         if (data.results.length === 0) {
@@ -326,6 +319,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         searchResultsList.innerHTML = '';
+
+        // Render Vector Fusion Info Banner if active
+        if (data.personalized_fusion_info && data.personalized_fusion_info.historical_queries && data.personalized_fusion_info.historical_queries.length > 0) {
+            const fusionAlert = document.createElement('div');
+            fusionAlert.className = 'info-banner';
+            fusionAlert.style.marginBottom = '15px';
+            fusionAlert.style.padding = '12px 15px';
+            fusionAlert.style.background = 'rgba(59, 130, 246, 0.1)';
+            fusionAlert.style.border = '1px solid rgba(59, 130, 246, 0.2)';
+            fusionAlert.style.borderRadius = '8px';
+            fusionAlert.style.fontSize = '0.9em';
+            fusionAlert.style.color = '#93c5fd';
+            fusionAlert.style.display = 'flex';
+            fusionAlert.style.alignItems = 'center';
+            fusionAlert.style.gap = '10px';
+            
+            const historyList = data.personalized_fusion_info.historical_queries.join(', ');
+            fusionAlert.innerHTML = `
+                <span style="font-size: 1.2em;">🤖</span>
+                <div>
+                    <strong>Vector Fusion Active:</strong> Combined query embedding vector (70%) with user interest vector (30%) derived from recent search history: 
+                    <span style="color: #60a5fa; font-style: italic; font-weight: 500;">"${historyList}"</span>
+                </div>
+            `;
+            searchResultsList.appendChild(fusionAlert);
+        }
         data.results.forEach(doc => {
             const card = document.createElement('div');
             card.className = 'result-card';
@@ -429,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
             data: {
                 labels: ['MAP', 'Recall', 'Precision@10', 'nDCG'],
                 datasets: [{
-                    label: `Scores on ${evalData.dataset.toUpperCase()}`,
+                    label: `Evaluation Scores on ${evalData.dataset.toUpperCase()}`,
                     data: [
                         evalData.map_score,
                         evalData.recall_score,
@@ -437,18 +456,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         evalData.ndcg_score
                     ],
                     backgroundColor: [
-                        'rgba(139, 92, 246, 0.6)', // purple
-                        'rgba(59, 130, 246, 0.6)', // blue
-                        'rgba(236, 72, 153, 0.6)', // pink
-                        'rgba(52, 211, 153, 0.6)'  // green
+                        'rgba(139, 92, 246, 0.85)', // purple
+                        'rgba(59, 130, 246, 0.85)', // blue
+                        'rgba(236, 72, 153, 0.85)', // pink
+                        'rgba(16, 185, 129, 0.85)'  // green (solid emerald)
                     ],
                     borderColor: [
                         '#8b5cf6',
                         '#3b82f6',
                         '#ec4899',
-                        '#34d399'
+                        '#10b981'
                     ],
-                    borderWidth: 1
+                    borderWidth: 1.5,
+                    borderRadius: 6, // rounded corners for bars
+                    borderSkipped: false
                 }]
             },
             options: {
@@ -456,9 +477,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
+                        position: 'top',
                         labels: {
-                            color: '#f3f4f6'
+                            color: '#1f2937', // dark charcoal for readability
+                            font: {
+                                family: "'Outfit', 'Inter', sans-serif",
+                                size: 12,
+                                weight: '500'
+                            },
+                            padding: 15
                         }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1f2937',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        cornerRadius: 6,
+                        padding: 10
                     }
                 },
                 scales: {
@@ -466,10 +501,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         beginAtZero: true,
                         max: 1.0,
                         grid: {
-                            color: 'rgba(255, 255, 255, 0.05)'
+                            color: 'rgba(0, 0, 0, 0.05)' // very subtle dark lines
                         },
                         ticks: {
-                            color: '#9ca3af'
+                            color: '#4b5563', // readable charcoal grey
+                            font: {
+                                family: "'Inter', sans-serif",
+                                size: 11
+                            }
                         }
                     },
                     x: {
@@ -477,7 +516,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             display: false
                         },
                         ticks: {
-                            color: '#9ca3af'
+                            color: '#4b5563', // readable charcoal grey
+                            font: {
+                                family: "'Inter', sans-serif",
+                                size: 11,
+                                weight: '500'
+                            }
                         }
                     }
                 }

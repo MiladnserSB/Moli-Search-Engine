@@ -16,6 +16,7 @@ class QueryRequest(BaseModel):
     bm25_b: Optional[float] = 0.75
     hybrid_alpha: Optional[float] = 0.5
     use_additional_features: Optional[bool] = False
+    user_id: Optional[str] = "default_user"
     top_k: Optional[int] = 10
     retrieve_text: Optional[bool] = True
 
@@ -23,6 +24,7 @@ class SearchResponse(BaseModel):
     results: List[DocumentSchema]
     refined_query: Optional[str] = None
     personalized_query: Optional[str] = None
+    personalized_fusion_info: Optional[dict] = None
     time_taken_ms: float
 
 class BatchQueryRequest(BaseModel):

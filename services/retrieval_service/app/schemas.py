@@ -1,11 +1,13 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
+
 class DocumentSchema(BaseModel):
     id: str
     title: Optional[str] = None
     content: str
     score: float
+
 
 class QueryRequest(BaseModel):
     query: str
@@ -16,13 +18,17 @@ class QueryRequest(BaseModel):
     bm25_b: Optional[float] = 0.75
     hybrid_alpha: Optional[float] = 0.5
     use_additional_features: Optional[bool] = False
+    user_id: Optional[str] = "default_user"
     top_k: Optional[int] = 10
     retrieve_text: Optional[bool] = True
+
 
 class SearchResponse(BaseModel):
     results: List[DocumentSchema]
     refined_query: Optional[str] = None
+    personalized_fusion_info: Optional[dict] = None
     time_taken_ms: float
+
 
 class BatchQueryRequest(BaseModel):
     queries: List[str]
@@ -36,11 +42,12 @@ class BatchQueryRequest(BaseModel):
     top_k: Optional[int] = 10
     retrieve_text: Optional[bool] = False
 
+
 class BatchQueryResult(BaseModel):
     query: str
     results: List[DocumentSchema]
 
+
 class BatchSearchResponse(BaseModel):
     results: List[BatchQueryResult]
     time_taken_ms: float
-

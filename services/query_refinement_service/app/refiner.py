@@ -279,7 +279,8 @@ class QueryRefiner:
             return self.synonyms_cache[word][:max_syns]
 
         syns = []
-        for synset in wordnet.synsets(word):
+        # نقيد البحث بأول 3 معاني فقط (الأكثر شيوعاً) لتجنب المرادفات النادرة وغير المناسبة للسياق (مثل آلة -> سيارة)
+        for synset in wordnet.synsets(word)[:3]:
             for lemma in synset.lemmas():
                 name = lemma.name().replace("_", " ").lower()
                 if name != word and name.isalpha() and len(name) > 2:

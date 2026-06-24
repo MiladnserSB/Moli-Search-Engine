@@ -1,6 +1,6 @@
 - [x] Update Gateway Service query preprocessing alignment
 - [x] Update Retrieval Service QueryRequest schema and hybrid matching logic
 - [x] Implement Query Refinement Service refiner (spelling correction, WordNet synonyms, prefix autocomplete)
-- [x] Implement Query Refinement Service endpoints
-- [x] Update frontend JavaScript (`app.js`) to target gateway port 8000 & adjust ChartJS colors for light modend dropdown UI
+- [x] Implement /cluster/plot/{dataset}/{num_clusters} endpoint in clustering_service
+- [ ] Expose /api/cluster/plot/{dataset}/{num_clusters} route in gateway_servicet 8000 & adjust ChartJS colors for light modend dropdown UI
 - [x] Verify everything works end-to-end
