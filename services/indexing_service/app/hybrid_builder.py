@@ -1,4 +1,3 @@
-# Parallel Hybrid Representation Builder
 import os
 import gc
 import time

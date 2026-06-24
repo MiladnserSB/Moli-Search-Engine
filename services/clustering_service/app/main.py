@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, BackgroundTasks
-from shared.schemas import ClusteringRequest, ClusteringResponse
-from shared.config import settings
+from .schemas import ClusteringRequest, ClusteringResponse
+from .config import settings
 import uvicorn
 import time
 

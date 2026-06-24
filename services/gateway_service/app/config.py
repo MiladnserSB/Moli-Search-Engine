@@ -1,0 +1,12 @@
+import os
+
+class Settings:
+    GATEWAY_PORT = int(os.getenv("GATEWAY_PORT", "8000"))
+    PREPROCESSING_SERVICE_URL = os.getenv("PREPROCESSING_SERVICE_URL", "http://127.0.0.1:8001")
+    INDEXING_SERVICE_URL = os.getenv("INDEXING_SERVICE_URL", "http://127.0.0.1:8002")
+    RETRIEVAL_SERVICE_URL = os.getenv("RETRIEVAL_SERVICE_URL", "http://127.0.0.1:8003")
+    CLUSTERING_SERVICE_URL = os.getenv("CLUSTERING_SERVICE_URL", "http://127.0.0.1:8004")
+    EVALUATION_SERVICE_URL = os.getenv("EVALUATION_SERVICE_URL", "http://127.0.0.1:8005")
+    REFINEMENT_SERVICE_URL = os.getenv("REFINEMENT_SERVICE_URL", "http://127.0.0.1:8006")
+
+settings = Settings()

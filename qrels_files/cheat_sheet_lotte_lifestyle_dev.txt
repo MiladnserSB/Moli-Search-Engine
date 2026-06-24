@@ -1,0 +1,1007 @@
+=== CHEAT SHEET FOR LOTTE_LIFESTYLE_DEV ===
+This file maps query IDs and texts to their ground-truth relevant document IDs.
+Use these queries on the UI to verify correct retrieval.
+
+Query ID: 0
+Query Text: Why does my cat keep patting my face?
+Relevant Documents:
+  - Document ID: 116 (relevance: 1)
+--------------------------------------------------
+Query ID: 1
+Query Text: How should I discipline my cat for bad behavior?
+Relevant Documents:
+  - Document ID: 32 (relevance: 1)
+  - Document ID: 498 (relevance: 1)
+  - Document ID: 1142 (relevance: 1)
+  - Document ID: 3765 (relevance: 1)
+  - Document ID: 4664 (relevance: 1)
+  - Document ID: 6030 (relevance: 1)
+  - Document ID: 7325 (relevance: 1)
+  - Document ID: 7395 (relevance: 1)
+  - Document ID: 9573 (relevance: 1)
+--------------------------------------------------
+Query ID: 10
+Query Text: Does purring tire cats?
+Relevant Documents:
+  - Document ID: 9425 (relevance: 1)
+  - Document ID: 9430 (relevance: 1)
+  - Document ID: 9431 (relevance: 1)
+  - Document ID: 9432 (relevance: 1)
+--------------------------------------------------
+Query ID: 100
+Query Text: How can you deal with tantrums without spanking?
+Relevant Documents:
+  - Document ID: 39386 (relevance: 1)
+  - Document ID: 39391 (relevance: 1)
+  - Document ID: 39396 (relevance: 1)
+  - Document ID: 39397 (relevance: 1)
+  - Document ID: 39398 (relevance: 1)
+  - Document ID: 39415 (relevance: 1)
+  - Document ID: 39451 (relevance: 1)
+  - Document ID: 39642 (relevance: 1)
+  - Document ID: 39751 (relevance: 1)
+  - Document ID: 39755 (relevance: 1)
+--------------------------------------------------
+Query ID: 1000
+Query Text: How to get rid of insects on basil while leaving the leaves safe to eat?
+Relevant Documents:
+  - Document ID: 18854 (relevance: 1)
+  - Document ID: 18870 (relevance: 1)
+  - Document ID: 18902 (relevance: 1)
+  - Document ID: 20663 (relevance: 1)
+  - Document ID: 20974 (relevance: 1)
+--------------------------------------------------
+Query ID: 1001
+Query Text: What can I grow in a sealed office environment with no natural light or airflow?
+Relevant Documents:
+  - Document ID: 19973 (relevance: 1)
+  - Document ID: 19977 (relevance: 1)
+  - Document ID: 19991 (relevance: 1)
+  - Document ID: 19999 (relevance: 1)
+  - Document ID: 26208 (relevance: 1)
+--------------------------------------------------
+Query ID: 1002
+Query Text: Is it OK to put moldy fruits and vegetables in the compost heap?
+Relevant Documents:
+  - Document ID: 27882 (relevance: 1)
+  - Document ID: 27890 (relevance: 1)
+  - Document ID: 27893 (relevance: 1)
+--------------------------------------------------
+Query ID: 1003
+Query Text: What kind of plants will survive the heat from an air conditioner?
+Relevant Documents:
+  - Document ID: 18085 (relevance: 1)
+  - Document ID: 18094 (relevance: 1)
+  - Document ID: 18612 (relevance: 1)
+  - Document ID: 18767 (relevance: 1)
+  - Document ID: 18770 (relevance: 1)
+  - Document ID: 21373 (relevance: 1)
+--------------------------------------------------
+Query ID: 1004
+Query Text: How do I care for potted apple seedlings over the winter?
+Relevant Documents:
+  - Document ID: 19366 (relevance: 1)
+  - Document ID: 35668 (relevance: 1)
+--------------------------------------------------
+Query ID: 1005
+Query Text: Will a cedar tree grow new limbs?
+Relevant Documents:
+  - Document ID: 19201 (relevance: 1)
+  - Document ID: 19212 (relevance: 1)
+  - Document ID: 19333 (relevance: 1)
+--------------------------------------------------
+Query ID: 1006
+Query Text: Why are my apples rotting on the tree?
+Relevant Documents:
+  - Document ID: 19624 (relevance: 1)
+  - Document ID: 19697 (relevance: 1)
+--------------------------------------------------
+Query ID: 1007
+Query Text: Can jalapeأ±os be grown from pickled jalapeأ±o seeds?
+Relevant Documents:
+  - Document ID: 18545 (relevance: 1)
+  - Document ID: 18546 (relevance: 1)
+  - Document ID: 25775 (relevance: 1)
+--------------------------------------------------
+Query ID: 1008
+Query Text: Will dumping paint destroy a nearby tree?
+Relevant Documents:
+  - Document ID: 18125 (relevance: 1)
+  - Document ID: 18139 (relevance: 1)
+--------------------------------------------------
+Query ID: 1009
+Query Text: Amending clay soil on a large scale
+Relevant Documents:
+  - Document ID: 26143 (relevance: 1)
+  - Document ID: 26144 (relevance: 1)
+  - Document ID: 26146 (relevance: 1)
+  - Document ID: 26148 (relevance: 1)
+  - Document ID: 26150 (relevance: 1)
+  - Document ID: 26151 (relevance: 1)
+  - Document ID: 26153 (relevance: 1)
+  - Document ID: 26179 (relevance: 1)
+  - Document ID: 32153 (relevance: 1)
+  - Document ID: 35022 (relevance: 1)
+--------------------------------------------------
+Query ID: 101
+Query Text: Son was sent home from sleepover for behavior
+Relevant Documents:
+  - Document ID: 53148 (relevance: 1)
+  - Document ID: 53150 (relevance: 1)
+  - Document ID: 53153 (relevance: 1)
+  - Document ID: 53155 (relevance: 1)
+  - Document ID: 53160 (relevance: 1)
+  - Document ID: 53162 (relevance: 1)
+  - Document ID: 53165 (relevance: 1)
+  - Document ID: 53172 (relevance: 1)
+  - Document ID: 53173 (relevance: 1)
+  - Document ID: 53177 (relevance: 1)
+--------------------------------------------------
+Query ID: 1010
+Query Text: How do I start an oak tree from an acorn?
+Relevant Documents:
+  - Document ID: 19443 (relevance: 1)
+--------------------------------------------------
+Query ID: 1011
+Query Text: What is the proper way to prune a Fig Tree?
+Relevant Documents:
+  - Document ID: 18253 (relevance: 1)
+--------------------------------------------------
+Query ID: 1012
+Query Text: Which tomatoes grow the best in high temperatures?
+Relevant Documents:
+  - Document ID: 25043 (relevance: 1)
+--------------------------------------------------
+Query ID: 1013
+Query Text: What is the point of a greenhouse?
+Relevant Documents:
+  - Document ID: 17980 (relevance: 1)
+  - Document ID: 17982 (relevance: 1)
+  - Document ID: 17983 (relevance: 1)
+--------------------------------------------------
+Query ID: 1014
+Query Text: My garden soil is devoid of nutrients, how should I improve it this winter?
+Relevant Documents:
+  - Document ID: 19086 (relevance: 1)
+  - Document ID: 19092 (relevance: 1)
+--------------------------------------------------
+Query ID: 1015
+Query Text: What is the purpose of these holes on my wire stripper?
+Relevant Documents:
+  - Document ID: 133382 (relevance: 1)
+  - Document ID: 133383 (relevance: 1)
+--------------------------------------------------
+Query ID: 1016
+Query Text: How to prevent heavy rainwater from jumping the gutter?
+Relevant Documents:
+  - Document ID: 148979 (relevance: 1)
+  - Document ID: 148980 (relevance: 1)
+  - Document ID: 148981 (relevance: 1)
+  - Document ID: 148982 (relevance: 1)
+  - Document ID: 149015 (relevance: 1)
+  - Document ID: 149059 (relevance: 1)
+--------------------------------------------------
+Query ID: 1017
+Query Text: Is there an easy way to measure the height of a tree?
+Relevant Documents:
+  - Document ID: 127132 (relevance: 1)
+  - Document ID: 127133 (relevance: 1)
+  - Document ID: 127134 (relevance: 1)
+  - Document ID: 127136 (relevance: 1)
+  - Document ID: 127138 (relevance: 1)
+  - Document ID: 127150 (relevance: 1)
+  - Document ID: 127155 (relevance: 1)
+  - Document ID: 127163 (relevance: 1)
+  - Document ID: 127188 (relevance: 1)
+  - Document ID: 127219 (relevance: 1)
+--------------------------------------------------
+Query ID: 1018
+Query Text: When should I not use WD-40?
+Relevant Documents:
+  - Document ID: 126673 (relevance: 1)
+  - Document ID: 126675 (relevance: 1)
+  - Document ID: 126677 (relevance: 1)
+  - Document ID: 126678 (relevance: 1)
+  - Document ID: 126681 (relevance: 1)
+  - Document ID: 126695 (relevance: 1)
+  - Document ID: 126701 (relevance: 1)
+  - Document ID: 126703 (relevance: 1)
+  - Document ID: 130225 (relevance: 1)
+  - Document ID: 130226 (relevance: 1)
+--------------------------------------------------
+Query ID: 1019
+Query Text: How can I add a C wire to my thermostat?
+Relevant Documents:
+  - Document ID: 128984 (relevance: 1)
+  - Document ID: 129003 (relevance: 1)
+  - Document ID: 133263 (relevance: 1)
+  - Document ID: 138131 (relevance: 1)
+  - Document ID: 153637 (relevance: 1)
+  - Document ID: 178599 (relevance: 1)
+--------------------------------------------------
+Query ID: 102
+Query Text: If my 5yr old is an exceptional liar, should I expect that she will continue lying as she gets older?
+Relevant Documents:
+  - Document ID: 53385 (relevance: 1)
+  - Document ID: 53387 (relevance: 1)
+  - Document ID: 53389 (relevance: 1)
+  - Document ID: 53390 (relevance: 1)
+  - Document ID: 53391 (relevance: 1)
+  - Document ID: 53392 (relevance: 1)
+  - Document ID: 53396 (relevance: 1)
+  - Document ID: 53411 (relevance: 1)
+  - Document ID: 54246 (relevance: 1)
+--------------------------------------------------
+Query ID: 1020
+Query Text: Why does my freezer get a little warmer every 14 hours?
+Relevant Documents:
+  - Document ID: 168221 (relevance: 1)
+  - Document ID: 168223 (relevance: 1)
+  - Document ID: 168237 (relevance: 1)
+--------------------------------------------------
+Query ID: 1021
+Query Text: How do I make a height adjustable desk?
+Relevant Documents:
+  - Document ID: 124177 (relevance: 1)
+  - Document ID: 124179 (relevance: 1)
+  - Document ID: 124182 (relevance: 1)
+  - Document ID: 124194 (relevance: 1)
+  - Document ID: 126558 (relevance: 1)
+  - Document ID: 126763 (relevance: 1)
+  - Document ID: 128474 (relevance: 1)
+  - Document ID: 129463 (relevance: 1)
+  - Document ID: 129551 (relevance: 1)
+  - Document ID: 129642 (relevance: 1)
+--------------------------------------------------
+Query ID: 1022
+Query Text: Should a washer go on nut side, or the bolt side?
+Relevant Documents:
+  - Document ID: 133674 (relevance: 1)
+  - Document ID: 133677 (relevance: 1)
+  - Document ID: 133679 (relevance: 1)
+  - Document ID: 133681 (relevance: 1)
+  - Document ID: 133689 (relevance: 1)
+  - Document ID: 148136 (relevance: 1)
+--------------------------------------------------
+Query ID: 1023
+Query Text: How to remove screws with stripped heads?
+Relevant Documents:
+  - Document ID: 128963 (relevance: 1)
+  - Document ID: 128964 (relevance: 1)
+  - Document ID: 128965 (relevance: 1)
+  - Document ID: 128976 (relevance: 1)
+  - Document ID: 128978 (relevance: 1)
+  - Document ID: 130663 (relevance: 1)
+  - Document ID: 130664 (relevance: 1)
+  - Document ID: 130672 (relevance: 1)
+  - Document ID: 132224 (relevance: 1)
+  - Document ID: 133737 (relevance: 1)
+--------------------------------------------------
+Query ID: 1024
+Query Text: Why did my electrician put metal plates wherever the stud is drilled through?
+Relevant Documents:
+  - Document ID: 159593 (relevance: 1)
+  - Document ID: 159615 (relevance: 1)
+--------------------------------------------------
+Query ID: 1025
+Query Text: Are solar panels cost-effective?
+Relevant Documents:
+  - Document ID: 123587 (relevance: 1)
+  - Document ID: 123595 (relevance: 1)
+  - Document ID: 123640 (relevance: 1)
+  - Document ID: 123643 (relevance: 1)
+  - Document ID: 123924 (relevance: 1)
+  - Document ID: 123926 (relevance: 1)
+  - Document ID: 125653 (relevance: 1)
+  - Document ID: 126870 (relevance: 1)
+  - Document ID: 126871 (relevance: 1)
+  - Document ID: 127062 (relevance: 1)
+--------------------------------------------------
+Query ID: 1026
+Query Text: Is there a case where nails are better than screws, from an engineering/structural standpoint?
+Relevant Documents:
+  - Document ID: 123552 (relevance: 1)
+  - Document ID: 123553 (relevance: 1)
+  - Document ID: 123556 (relevance: 1)
+  - Document ID: 125820 (relevance: 1)
+  - Document ID: 126152 (relevance: 1)
+  - Document ID: 132961 (relevance: 1)
+  - Document ID: 134434 (relevance: 1)
+  - Document ID: 134829 (relevance: 1)
+  - Document ID: 149925 (relevance: 1)
+--------------------------------------------------
+Query ID: 1027
+Query Text: Understanding US Screw Sizes
+Relevant Documents:
+  - Document ID: 130764 (relevance: 1)
+  - Document ID: 130766 (relevance: 1)
+  - Document ID: 130779 (relevance: 1)
+  - Document ID: 135618 (relevance: 1)
+  - Document ID: 139795 (relevance: 1)
+  - Document ID: 145212 (relevance: 1)
+--------------------------------------------------
+Query ID: 1028
+Query Text: What should I consider regarding LAN wiring before building a house?
+Relevant Documents:
+  - Document ID: 130329 (relevance: 1)
+  - Document ID: 130330 (relevance: 1)
+  - Document ID: 130331 (relevance: 1)
+  - Document ID: 130333 (relevance: 1)
+  - Document ID: 130334 (relevance: 1)
+  - Document ID: 130338 (relevance: 1)
+  - Document ID: 130341 (relevance: 1)
+  - Document ID: 130350 (relevance: 1)
+  - Document ID: 130354 (relevance: 1)
+  - Document ID: 130383 (relevance: 1)
+--------------------------------------------------
+Query ID: 1029
+Query Text: How can I improve the water pressure in my shower?
+Relevant Documents:
+  - Document ID: 123217 (relevance: 1)
+  - Document ID: 123218 (relevance: 1)
+  - Document ID: 123222 (relevance: 1)
+  - Document ID: 123225 (relevance: 1)
+  - Document ID: 123232 (relevance: 1)
+  - Document ID: 123279 (relevance: 1)
+  - Document ID: 129534 (relevance: 1)
+  - Document ID: 134689 (relevance: 1)
+  - Document ID: 135806 (relevance: 1)
+  - Document ID: 169747 (relevance: 1)
+--------------------------------------------------
+Query ID: 103
+Query Text: How can I prevent my 8-year-old from spending time with his bad friend?
+Relevant Documents:
+  - Document ID: 39684 (relevance: 1)
+  - Document ID: 39686 (relevance: 1)
+  - Document ID: 39689 (relevance: 1)
+  - Document ID: 39691 (relevance: 1)
+  - Document ID: 39692 (relevance: 1)
+  - Document ID: 39697 (relevance: 1)
+  - Document ID: 39712 (relevance: 1)
+  - Document ID: 42678 (relevance: 1)
+  - Document ID: 46458 (relevance: 1)
+  - Document ID: 50620 (relevance: 1)
+--------------------------------------------------
+Query ID: 1030
+Query Text: If metal expands when heated, how does heating a bolt loosen it?
+Relevant Documents:
+  - Document ID: 156090 (relevance: 1)
+  - Document ID: 156094 (relevance: 1)
+  - Document ID: 156097 (relevance: 1)
+  - Document ID: 156098 (relevance: 1)
+  - Document ID: 156099 (relevance: 1)
+  - Document ID: 156141 (relevance: 1)
+  - Document ID: 156145 (relevance: 1)
+--------------------------------------------------
+Query ID: 1031
+Query Text: Should I set fence posts in dirt, gravel, crushed rock, or concrete?
+Relevant Documents:
+  - Document ID: 123118 (relevance: 1)
+  - Document ID: 123138 (relevance: 1)
+  - Document ID: 123154 (relevance: 1)
+  - Document ID: 133279 (relevance: 1)
+  - Document ID: 133584 (relevance: 1)
+  - Document ID: 134622 (relevance: 1)
+  - Document ID: 136561 (relevance: 1)
+  - Document ID: 136708 (relevance: 1)
+  - Document ID: 137341 (relevance: 1)
+  - Document ID: 140629 (relevance: 1)
+--------------------------------------------------
+Query ID: 1032
+Query Text: Is there a trick to applying caulk using a caulk-gun?
+Relevant Documents:
+  - Document ID: 123007 (relevance: 1)
+  - Document ID: 123008 (relevance: 1)
+  - Document ID: 123027 (relevance: 1)
+  - Document ID: 123032 (relevance: 1)
+  - Document ID: 123046 (relevance: 1)
+  - Document ID: 123088 (relevance: 1)
+  - Document ID: 124328 (relevance: 1)
+  - Document ID: 124376 (relevance: 1)
+  - Document ID: 131671 (relevance: 1)
+  - Document ID: 137329 (relevance: 1)
+--------------------------------------------------
+Query ID: 1033
+Query Text: When I turn down the dimmer switch on my lights, do I actually use less electricity?
+Relevant Documents:
+  - Document ID: 129672 (relevance: 1)
+  - Document ID: 129673 (relevance: 1)
+  - Document ID: 129677 (relevance: 1)
+  - Document ID: 129678 (relevance: 1)
+  - Document ID: 129679 (relevance: 1)
+  - Document ID: 129684 (relevance: 1)
+  - Document ID: 134804 (relevance: 1)
+  - Document ID: 138247 (relevance: 1)
+  - Document ID: 159574 (relevance: 1)
+  - Document ID: 182833 (relevance: 1)
+--------------------------------------------------
+Query ID: 1034
+Query Text: What are the tools that every Do-it-Yourselfer must own?
+Relevant Documents:
+  - Document ID: 123012 (relevance: 1)
+  - Document ID: 123017 (relevance: 1)
+  - Document ID: 123020 (relevance: 1)
+  - Document ID: 123021 (relevance: 1)
+  - Document ID: 123023 (relevance: 1)
+  - Document ID: 123024 (relevance: 1)
+  - Document ID: 123025 (relevance: 1)
+  - Document ID: 123028 (relevance: 1)
+  - Document ID: 123029 (relevance: 1)
+  - Document ID: 123031 (relevance: 1)
+--------------------------------------------------
+Query ID: 1035
+Query Text: How to avoid stripping screw heads?
+Relevant Documents:
+  - Document ID: 173599 (relevance: 1)
+  - Document ID: 173600 (relevance: 1)
+  - Document ID: 173601 (relevance: 1)
+  - Document ID: 173606 (relevance: 1)
+  - Document ID: 173607 (relevance: 1)
+  - Document ID: 173626 (relevance: 1)
+  - Document ID: 173636 (relevance: 1)
+  - Document ID: 173646 (relevance: 1)
+  - Document ID: 173661 (relevance: 1)
+  - Document ID: 173675 (relevance: 1)
+--------------------------------------------------
+Query ID: 1036
+Query Text: How can I fix electrical outlets that dont hold plugs that are plugged in to them?
+Relevant Documents:
+  - Document ID: 126040 (relevance: 1)
+  - Document ID: 126041 (relevance: 1)
+  - Document ID: 126053 (relevance: 1)
+  - Document ID: 130538 (relevance: 1)
+--------------------------------------------------
+Query ID: 1037
+Query Text: When would one use an impact driver versus a regular drill?
+Relevant Documents:
+  - Document ID: 133551 (relevance: 1)
+  - Document ID: 133554 (relevance: 1)
+  - Document ID: 133555 (relevance: 1)
+  - Document ID: 133556 (relevance: 1)
+  - Document ID: 133557 (relevance: 1)
+  - Document ID: 137187 (relevance: 1)
+  - Document ID: 150031 (relevance: 1)
+--------------------------------------------------
+Query ID: 1038
+Query Text: When pre-drilling for screws, how do you determine the correct bit diameter?
+Relevant Documents:
+  - Document ID: 128071 (relevance: 1)
+  - Document ID: 128072 (relevance: 1)
+  - Document ID: 128078 (relevance: 1)
+  - Document ID: 146212 (relevance: 1)
+--------------------------------------------------
+Query ID: 1039
+Query Text: Which way is up? (electric outlet)
+Relevant Documents:
+  - Document ID: 127761 (relevance: 1)
+  - Document ID: 127762 (relevance: 1)
+  - Document ID: 127765 (relevance: 1)
+  - Document ID: 127766 (relevance: 1)
+  - Document ID: 127793 (relevance: 1)
+  - Document ID: 130544 (relevance: 1)
+  - Document ID: 130545 (relevance: 1)
+  - Document ID: 132229 (relevance: 1)
+  - Document ID: 185926 (relevance: 1)
+--------------------------------------------------
+Query ID: 104
+Query Text: My wife wants a homosexual child
+Relevant Documents:
+  - Document ID: 52567 (relevance: 1)
+  - Document ID: 52568 (relevance: 1)
+  - Document ID: 52571 (relevance: 1)
+  - Document ID: 52572 (relevance: 1)
+  - Document ID: 52574 (relevance: 1)
+  - Document ID: 52576 (relevance: 1)
+  - Document ID: 52578 (relevance: 1)
+  - Document ID: 52582 (relevance: 1)
+  - Document ID: 52588 (relevance: 1)
+--------------------------------------------------
+Query ID: 1040
+Query Text: How can I remove a lemon from a toilet drain?
+Relevant Documents:
+  - Document ID: 190326 (relevance: 1)
+  - Document ID: 190327 (relevance: 1)
+  - Document ID: 190328 (relevance: 1)
+  - Document ID: 190335 (relevance: 1)
+  - Document ID: 190346 (relevance: 1)
+  - Document ID: 190348 (relevance: 1)
+  - Document ID: 190374 (relevance: 1)
+  - Document ID: 190382 (relevance: 1)
+  - Document ID: 200240 (relevance: 1)
+  - Document ID: 200967 (relevance: 1)
+--------------------------------------------------
+Query ID: 1041
+Query Text: Can Romex (NM-B) cable be run through conduit?
+Relevant Documents:
+  - Document ID: 136989 (relevance: 1)
+  - Document ID: 152228 (relevance: 1)
+  - Document ID: 161217 (relevance: 1)
+  - Document ID: 180358 (relevance: 1)
+--------------------------------------------------
+Query ID: 1042
+Query Text: What is the purpose of this Y shaped bit?
+Relevant Documents:
+  - Document ID: 133286 (relevance: 1)
+  - Document ID: 153379 (relevance: 1)
+--------------------------------------------------
+Query ID: 1043
+Query Text: Half my power out, but firing up an appliance turns it back on
+Relevant Documents:
+  - Document ID: 188301 (relevance: 1)
+--------------------------------------------------
+Query ID: 1044
+Query Text: When drywalling a room, should I do the ceiling before the walls?
+Relevant Documents:
+  - Document ID: 141221 (relevance: 1)
+  - Document ID: 141222 (relevance: 1)
+  - Document ID: 141227 (relevance: 1)
+  - Document ID: 141246 (relevance: 1)
+  - Document ID: 141249 (relevance: 1)
+  - Document ID: 141262 (relevance: 1)
+  - Document ID: 149170 (relevance: 1)
+--------------------------------------------------
+Query ID: 1045
+Query Text: Doors are sticky and noisy when opened?
+Relevant Documents:
+  - Document ID: 124053 (relevance: 1)
+  - Document ID: 124054 (relevance: 1)
+  - Document ID: 124055 (relevance: 1)
+  - Document ID: 124062 (relevance: 1)
+  - Document ID: 128075 (relevance: 1)
+  - Document ID: 128824 (relevance: 1)
+  - Document ID: 132701 (relevance: 1)
+  - Document ID: 133680 (relevance: 1)
+--------------------------------------------------
+Query ID: 1046
+Query Text: Should I use a subfloor for a finished basements floor?
+Relevant Documents:
+  - Document ID: 123084 (relevance: 1)
+  - Document ID: 123537 (relevance: 1)
+  - Document ID: 124851 (relevance: 1)
+  - Document ID: 125227 (relevance: 1)
+  - Document ID: 125234 (relevance: 1)
+  - Document ID: 147193 (relevance: 1)
+--------------------------------------------------
+Query ID: 1047
+Query Text: Why are there so many different types of screws (phillps/flat/hex/star/etc)?
+Relevant Documents:
+  - Document ID: 124657 (relevance: 1)
+  - Document ID: 124660 (relevance: 1)
+  - Document ID: 124663 (relevance: 1)
+  - Document ID: 124667 (relevance: 1)
+  - Document ID: 124773 (relevance: 1)
+  - Document ID: 126299 (relevance: 1)
+  - Document ID: 136339 (relevance: 1)
+--------------------------------------------------
+Query ID: 1048
+Query Text: How can I speed up my slow hot water?
+Relevant Documents:
+  - Document ID: 123332 (relevance: 1)
+  - Document ID: 123333 (relevance: 1)
+  - Document ID: 123334 (relevance: 1)
+  - Document ID: 123335 (relevance: 1)
+  - Document ID: 123337 (relevance: 1)
+  - Document ID: 123338 (relevance: 1)
+  - Document ID: 123431 (relevance: 1)
+--------------------------------------------------
+Query ID: 1049
+Query Text: How long should I wait before plugging in a new refrigerator?
+Relevant Documents:
+  - Document ID: 124826 (relevance: 1)
+  - Document ID: 125731 (relevance: 1)
+  - Document ID: 135953 (relevance: 1)
+--------------------------------------------------
+Query ID: 105
+Query Text: Seventeen year old daughter wants to take an international trip to meet someone she met online
+Relevant Documents:
+  - Document ID: 51411 (relevance: 1)
+  - Document ID: 51412 (relevance: 1)
+  - Document ID: 51413 (relevance: 1)
+  - Document ID: 51414 (relevance: 1)
+  - Document ID: 51416 (relevance: 1)
+  - Document ID: 51417 (relevance: 1)
+  - Document ID: 51418 (relevance: 1)
+  - Document ID: 51420 (relevance: 1)
+  - Document ID: 51421 (relevance: 1)
+  - Document ID: 51422 (relevance: 1)
+--------------------------------------------------
+Query ID: 1050
+Query Text: How do I run wires for a wall-mount flatscreen TV?
+Relevant Documents:
+  - Document ID: 123440 (relevance: 1)
+  - Document ID: 123442 (relevance: 1)
+  - Document ID: 123443 (relevance: 1)
+  - Document ID: 123445 (relevance: 1)
+  - Document ID: 123465 (relevance: 1)
+  - Document ID: 123472 (relevance: 1)
+  - Document ID: 124945 (relevance: 1)
+--------------------------------------------------
+Query ID: 1051
+Query Text: Are there ways to determine if a wall is load bearing?
+Relevant Documents:
+  - Document ID: 123004 (relevance: 1)
+  - Document ID: 123011 (relevance: 1)
+  - Document ID: 127275 (relevance: 1)
+  - Document ID: 138642 (relevance: 1)
+--------------------------------------------------
+Query ID: 1052
+Query Text: What are insulated screwdrivers for if youâ€™re not supposed to work on a live circuit?
+Relevant Documents:
+  - Document ID: 172064 (relevance: 1)
+  - Document ID: 172068 (relevance: 1)
+  - Document ID: 172070 (relevance: 1)
+  - Document ID: 172072 (relevance: 1)
+  - Document ID: 172085 (relevance: 1)
+  - Document ID: 172097 (relevance: 1)
+  - Document ID: 172098 (relevance: 1)
+  - Document ID: 172105 (relevance: 1)
+  - Document ID: 172137 (relevance: 1)
+  - Document ID: 176700 (relevance: 1)
+--------------------------------------------------
+Query ID: 1053
+Query Text: Are gaps above and below framing members a concern?
+Relevant Documents:
+  - Document ID: 189208 (relevance: 1)
+  - Document ID: 189209 (relevance: 1)
+  - Document ID: 189214 (relevance: 1)
+  - Document ID: 189219 (relevance: 1)
+  - Document ID: 189233 (relevance: 1)
+  - Document ID: 189240 (relevance: 1)
+  - Document ID: 189259 (relevance: 1)
+  - Document ID: 189266 (relevance: 1)
+  - Document ID: 189270 (relevance: 1)
+--------------------------------------------------
+Query ID: 1054
+Query Text: Can I heat one room and cool another with an in-wall AC?
+Relevant Documents:
+  - Document ID: 189445 (relevance: 1)
+  - Document ID: 189446 (relevance: 1)
+  - Document ID: 189447 (relevance: 1)
+  - Document ID: 189454 (relevance: 1)
+  - Document ID: 189461 (relevance: 1)
+  - Document ID: 189463 (relevance: 1)
+  - Document ID: 189464 (relevance: 1)
+  - Document ID: 189469 (relevance: 1)
+  - Document ID: 189476 (relevance: 1)
+  - Document ID: 189495 (relevance: 1)
+--------------------------------------------------
+Query ID: 1055
+Query Text: How can I paint over mold to prevent it from coming back again?
+Relevant Documents:
+  - Document ID: 123109 (relevance: 1)
+  - Document ID: 123115 (relevance: 1)
+  - Document ID: 123133 (relevance: 1)
+  - Document ID: 123800 (relevance: 1)
+  - Document ID: 131080 (relevance: 1)
+--------------------------------------------------
+Query ID: 1056
+Query Text: How can I pull a wire through a pipe that has too many turns for fish tape?
+Relevant Documents:
+  - Document ID: 159314 (relevance: 1)
+  - Document ID: 159321 (relevance: 1)
+  - Document ID: 159331 (relevance: 1)
+  - Document ID: 159336 (relevance: 1)
+  - Document ID: 182904 (relevance: 1)
+  - Document ID: 182932 (relevance: 1)
+--------------------------------------------------
+Query ID: 1057
+Query Text: Is there a way to unscrew a light bulb that has broken?
+Relevant Documents:
+  - Document ID: 142091 (relevance: 1)
+  - Document ID: 142092 (relevance: 1)
+  - Document ID: 142093 (relevance: 1)
+  - Document ID: 142119 (relevance: 1)
+  - Document ID: 142136 (relevance: 1)
+  - Document ID: 142143 (relevance: 1)
+--------------------------------------------------
+Query ID: 1058
+Query Text: What is this cable in my yard, why is it exposed, and what can I do about it?
+Relevant Documents:
+  - Document ID: 203116 (relevance: 1)
+--------------------------------------------------
+Query ID: 1059
+Query Text: Is using 15 amp components on a 20 amp breaker against code?
+Relevant Documents:
+  - Document ID: 129863 (relevance: 1)
+  - Document ID: 129867 (relevance: 1)
+  - Document ID: 133403 (relevance: 1)
+  - Document ID: 156135 (relevance: 1)
+  - Document ID: 156891 (relevance: 1)
+  - Document ID: 164244 (relevance: 1)
+  - Document ID: 168989 (relevance: 1)
+--------------------------------------------------
+Query ID: 106
+Query Text: Wife agrees with parenting, but is intentionally less strict
+Relevant Documents:
+  - Document ID: 52581 (relevance: 1)
+  - Document ID: 52583 (relevance: 1)
+  - Document ID: 52585 (relevance: 1)
+  - Document ID: 52586 (relevance: 1)
+  - Document ID: 52587 (relevance: 1)
+  - Document ID: 52592 (relevance: 1)
+  - Document ID: 52597 (relevance: 1)
+  - Document ID: 52599 (relevance: 1)
+  - Document ID: 52603 (relevance: 1)
+  - Document ID: 52604 (relevance: 1)
+--------------------------------------------------
+Query ID: 1060
+Query Text: What does 1 Gang, 2 Gang, and so forth mean when talking about electrical boxes?
+Relevant Documents:
+  - Document ID: 129621 (relevance: 1)
+  - Document ID: 161879 (relevance: 1)
+--------------------------------------------------
+Query ID: 1061
+Query Text: Should I use steel or wood studs for basement exterior walls?
+Relevant Documents:
+  - Document ID: 127993 (relevance: 1)
+  - Document ID: 127996 (relevance: 1)
+  - Document ID: 128899 (relevance: 1)
+  - Document ID: 130049 (relevance: 1)
+  - Document ID: 133111 (relevance: 1)
+  - Document ID: 140543 (relevance: 1)
+  - Document ID: 156518 (relevance: 1)
+--------------------------------------------------
+Query ID: 1062
+Query Text: Should old knob and tube wiring be replaced?
+Relevant Documents:
+  - Document ID: 123015 (relevance: 1)
+  - Document ID: 123016 (relevance: 1)
+  - Document ID: 123018 (relevance: 1)
+  - Document ID: 123058 (relevance: 1)
+  - Document ID: 133079 (relevance: 1)
+  - Document ID: 139272 (relevance: 1)
+  - Document ID: 159987 (relevance: 1)
+--------------------------------------------------
+Query ID: 1063
+Query Text: Why dont you connect unused hot and neutral wires to complete the circuit?
+Relevant Documents:
+  - Document ID: 159389 (relevance: 1)
+  - Document ID: 159390 (relevance: 1)
+  - Document ID: 159392 (relevance: 1)
+  - Document ID: 159394 (relevance: 1)
+  - Document ID: 159397 (relevance: 1)
+  - Document ID: 159400 (relevance: 1)
+  - Document ID: 159408 (relevance: 1)
+  - Document ID: 159410 (relevance: 1)
+  - Document ID: 159423 (relevance: 1)
+--------------------------------------------------
+Query ID: 1064
+Query Text: Why is there a 1/4 jack in my oven?
+Relevant Documents:
+  - Document ID: 197378 (relevance: 1)
+  - Document ID: 197379 (relevance: 1)
+--------------------------------------------------
+Query ID: 1065
+Query Text: Is the Electrician trying to scam me?
+Relevant Documents:
+  - Document ID: 149744 (relevance: 1)
+  - Document ID: 149745 (relevance: 1)
+  - Document ID: 149748 (relevance: 1)
+  - Document ID: 149757 (relevance: 1)
+  - Document ID: 149762 (relevance: 1)
+  - Document ID: 149767 (relevance: 1)
+  - Document ID: 149772 (relevance: 1)
+  - Document ID: 149798 (relevance: 1)
+  - Document ID: 149887 (relevance: 1)
+--------------------------------------------------
+Query ID: 1066
+Query Text: How can I restore power after a switch was shorted with scissors?
+Relevant Documents:
+  - Document ID: 169834 (relevance: 1)
+  - Document ID: 169838 (relevance: 1)
+  - Document ID: 169839 (relevance: 1)
+--------------------------------------------------
+Query ID: 1067
+Query Text: How to reinforce a joist with plumbing running through it?
+Relevant Documents:
+  - Document ID: 200896 (relevance: 1)
+  - Document ID: 200897 (relevance: 1)
+  - Document ID: 200908 (relevance: 1)
+  - Document ID: 200910 (relevance: 1)
+  - Document ID: 200966 (relevance: 1)
+--------------------------------------------------
+Query ID: 1068
+Query Text: Why do my LED lights stay on, even when the switch is off?
+Relevant Documents:
+  - Document ID: 136615 (relevance: 1)
+  - Document ID: 136617 (relevance: 1)
+  - Document ID: 139254 (relevance: 1)
+--------------------------------------------------
+Query ID: 1069
+Query Text: How should I rewire a miswired 3-way switch?
+Relevant Documents:
+  - Document ID: 127769 (relevance: 1)
+  - Document ID: 127770 (relevance: 1)
+  - Document ID: 127790 (relevance: 1)
+--------------------------------------------------
+Query ID: 107
+Query Text: Limit access to screens (phone, computer) to my kids, whereas I benefitted from no limit during my own childhood
+Relevant Documents:
+  - Document ID: 56146 (relevance: 1)
+  - Document ID: 56148 (relevance: 1)
+  - Document ID: 56149 (relevance: 1)
+  - Document ID: 56150 (relevance: 1)
+  - Document ID: 56151 (relevance: 1)
+  - Document ID: 56152 (relevance: 1)
+  - Document ID: 56153 (relevance: 1)
+  - Document ID: 56154 (relevance: 1)
+  - Document ID: 56156 (relevance: 1)
+  - Document ID: 56157 (relevance: 1)
+--------------------------------------------------
+Query ID: 1070
+Query Text: Why does this receptacle have the ground tied to the neutral?
+Relevant Documents:
+  - Document ID: 129421 (relevance: 1)
+  - Document ID: 129426 (relevance: 1)
+  - Document ID: 135724 (relevance: 1)
+  - Document ID: 144964 (relevance: 1)
+--------------------------------------------------
+Query ID: 1071
+Query Text: How do I drill a 2â…› inch door knob hole over an existing 1آ½ inch hole?
+Relevant Documents:
+  - Document ID: 128924 (relevance: 1)
+  - Document ID: 128925 (relevance: 1)
+  - Document ID: 128927 (relevance: 1)
+  - Document ID: 131527 (relevance: 1)
+  - Document ID: 182602 (relevance: 1)
+--------------------------------------------------
+Query ID: 1072
+Query Text: Why is my voltage dropping with load and why is current flowing on my ground wire?
+Relevant Documents:
+  - Document ID: 188737 (relevance: 1)
+  - Document ID: 188742 (relevance: 1)
+  - Document ID: 188781 (relevance: 1)
+--------------------------------------------------
+Query ID: 1073
+Query Text: Can I run CAT5/6 cables parallel to electrical cables?
+Relevant Documents:
+  - Document ID: 129539 (relevance: 1)
+  - Document ID: 129540 (relevance: 1)
+  - Document ID: 129546 (relevance: 1)
+  - Document ID: 133168 (relevance: 1)
+  - Document ID: 137163 (relevance: 1)
+  - Document ID: 146347 (relevance: 1)
+--------------------------------------------------
+Query ID: 1074
+Query Text: What are the guidelines for holes in joists?
+Relevant Documents:
+  - Document ID: 129082 (relevance: 1)
+--------------------------------------------------
+Query ID: 1075
+Query Text: How do I run ethernet cable through a wall cavity?
+Relevant Documents:
+  - Document ID: 127231 (relevance: 1)
+  - Document ID: 127234 (relevance: 1)
+  - Document ID: 127235 (relevance: 1)
+  - Document ID: 127236 (relevance: 1)
+  - Document ID: 127237 (relevance: 1)
+  - Document ID: 127240 (relevance: 1)
+  - Document ID: 127267 (relevance: 1)
+--------------------------------------------------
+Query ID: 1076
+Query Text: If a light bulb is dead, does it still consume electricity if the switch is in ON?
+Relevant Documents:
+  - Document ID: 163929 (relevance: 1)
+  - Document ID: 163930 (relevance: 1)
+  - Document ID: 163935 (relevance: 1)
+  - Document ID: 163941 (relevance: 1)
+  - Document ID: 163961 (relevance: 1)
+--------------------------------------------------
+Query ID: 1077
+Query Text: This fell out of my toilet when I unscrewed the supply line. What is it?
+Relevant Documents:
+  - Document ID: 184692 (relevance: 1)
+  - Document ID: 184697 (relevance: 1)
+  - Document ID: 184704 (relevance: 1)
+  - Document ID: 194939 (relevance: 1)
+--------------------------------------------------
+Query ID: 1078
+Query Text: How to avoid wires when drilling into the wall?
+Relevant Documents:
+  - Document ID: 153674 (relevance: 1)
+  - Document ID: 153677 (relevance: 1)
+  - Document ID: 153680 (relevance: 1)
+  - Document ID: 153685 (relevance: 1)
+  - Document ID: 153686 (relevance: 1)
+  - Document ID: 153687 (relevance: 1)
+  - Document ID: 153713 (relevance: 1)
+  - Document ID: 182456 (relevance: 1)
+--------------------------------------------------
+Query ID: 1079
+Query Text: Are push in connectors up to code?
+Relevant Documents:
+  - Document ID: 126113 (relevance: 1)
+  - Document ID: 126460 (relevance: 1)
+  - Document ID: 127626 (relevance: 1)
+  - Document ID: 138264 (relevance: 1)
+--------------------------------------------------
+Query ID: 108
+Query Text: Should you let a toddler win?
+Relevant Documents:
+  - Document ID: 43318 (relevance: 1)
+  - Document ID: 43319 (relevance: 1)
+  - Document ID: 43321 (relevance: 1)
+  - Document ID: 43322 (relevance: 1)
+  - Document ID: 43323 (relevance: 1)
+  - Document ID: 43324 (relevance: 1)
+  - Document ID: 43325 (relevance: 1)
+  - Document ID: 43327 (relevance: 1)
+  - Document ID: 43328 (relevance: 1)
+  - Document ID: 43337 (relevance: 1)
+--------------------------------------------------
+Query ID: 1080
+Query Text: How can I allow 911 first responders to access a locked residence?
+Relevant Documents:
+  - Document ID: 178171 (relevance: 1)
+  - Document ID: 178172 (relevance: 1)
+  - Document ID: 178182 (relevance: 1)
+  - Document ID: 178190 (relevance: 1)
+  - Document ID: 178194 (relevance: 1)
+  - Document ID: 178222 (relevance: 1)
+  - Document ID: 178240 (relevance: 1)
+  - Document ID: 178254 (relevance: 1)
+  - Document ID: 178256 (relevance: 1)
+  - Document ID: 178309 (relevance: 1)
+--------------------------------------------------
+Query ID: 1081
+Query Text: What on earth is this small wall-mounted computer?
+Relevant Documents:
+  - Document ID: 185660 (relevance: 1)
+--------------------------------------------------
+Query ID: 1082
+Query Text: Why do gas water heater exhausts have an air gap before the chimney?
+Relevant Documents:
+  - Document ID: 185475 (relevance: 1)
+  - Document ID: 185507 (relevance: 1)
+  - Document ID: 185518 (relevance: 1)
+--------------------------------------------------
+Query ID: 1083
+Query Text: Is there a proper name for this kind of toothed disk?
+Relevant Documents:
+  - Document ID: 161216 (relevance: 1)
+  - Document ID: 161257 (relevance: 1)
+--------------------------------------------------
+Query ID: 1084
+Query Text: What is the best way to seal caulk tube?
+Relevant Documents:
+  - Document ID: 125462 (relevance: 1)
+  - Document ID: 125463 (relevance: 1)
+  - Document ID: 125467 (relevance: 1)
+  - Document ID: 125484 (relevance: 1)
+  - Document ID: 125519 (relevance: 1)
+  - Document ID: 125534 (relevance: 1)
+  - Document ID: 132817 (relevance: 1)
+  - Document ID: 135083 (relevance: 1)
+  - Document ID: 142117 (relevance: 1)
+  - Document ID: 158547 (relevance: 1)
+--------------------------------------------------
+Query ID: 1085
+Query Text: How do I secure my house against intruders?
+Relevant Documents:
+  - Document ID: 125036 (relevance: 1)
+  - Document ID: 125037 (relevance: 1)
+  - Document ID: 125038 (relevance: 1)
+  - Document ID: 125039 (relevance: 1)
+  - Document ID: 125052 (relevance: 1)
+  - Document ID: 125587 (relevance: 1)
+  - Document ID: 127355 (relevance: 1)
+  - Document ID: 130668 (relevance: 1)
+  - Document ID: 138664 (relevance: 1)
+--------------------------------------------------
+Query ID: 1086
+Query Text: How do you know when and where it is safe to drill into a wall?
+Relevant Documents:
+  - Document ID: 127410 (relevance: 1)
+  - Document ID: 127418 (relevance: 1)
+  - Document ID: 131159 (relevance: 1)
+  - Document ID: 140487 (relevance: 1)
+--------------------------------------------------
+Query ID: 1087
+Query Text: How should I go about installing a 12 volt DC residential circuit?
+Relevant Documents:
+  - Document ID: 134219 (relevance: 1)
+  - Document ID: 134223 (relevance: 1)
+  - Document ID: 134230 (relevance: 1)
+  - Document ID: 134287 (relevance: 1)
+  - Document ID: 145420 (relevance: 1)
+--------------------------------------------------

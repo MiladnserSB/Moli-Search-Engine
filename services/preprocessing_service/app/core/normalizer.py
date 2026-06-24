@@ -6,7 +6,7 @@ class TextNormalizer:
     def __init__(self):
         # تجميع الأنماط مسبقاً (Pre-compiling) يمنع إعادة بناء الـ Regex مع كل استدعاء،
         # مما يعطي سرعة معالجة قصوى وضخمة جداً داخل الـ Loops وقاعدة البيانات.
-        self.url_pattern = re.compile(r"https?://\S+|www\.\S+", re.IGNORECASE)
+        self.url_pattern = re.compile(r"https?://\S+|www\.\S+")
         self.html_pattern = re.compile(r"<.*?>")
         
         # إصلاح لغوي حرج: قمنا باستثناء الفاصلة العليا (') من الحذف [^\w\s']
@@ -19,7 +19,7 @@ class TextNormalizer:
         if not text:
             return ""
         
-        # تحويل النص إلى حروف صغيرة كخطوة أولى لتوحيد المطابقة لاحقاً إذا طلب ذلك
+        # تحويل النص إلى حروف صغيرة إذا تم طلب ذلك
         if lowercase:
             text = text.lower()
         

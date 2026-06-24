@@ -1,4 +1,12 @@
+import os
+import sys
 import time
+
+# Ensure core directory is discoverable by adding the app directory to sys.path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
+
 from core.normalizer import TextNormalizer
 from core.tokenizer import TextTokenizer
 from core.spell_checker import TextSpellChecker

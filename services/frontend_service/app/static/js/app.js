@@ -21,6 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const bVal = document.getElementById('b-val');
     const bm25Params = document.getElementById('bm25-parameters');
     
+    // Hybrid Sliders
+    const alphaSlider = document.getElementById('hybrid-alpha');
+    const alphaVal = document.getElementById('alpha-val');
+    const hybridParams = document.getElementById('hybrid-parameters');
+    
     // Evaluation Elements
     const runEvaluationBtn = document.getElementById('run-evaluation-btn');
     const evaluationDash = document.getElementById('evaluation-dash');
@@ -41,12 +46,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let chartInstance = null;
 
-    // Toggle BM25 slider visibility
+    // Toggle slider visibility
     modelSelect.addEventListener('change', (e) => {
-        if (e.target.value === 'bm25' || e.target.value.includes('hybrid')) {
+        const val = e.target.value;
+        if (val === 'bm25' || val.includes('hybrid')) {
             bm25Params.style.display = 'block';
         } else {
             bm25Params.style.display = 'none';
+        }
+        
+        if (val.includes('hybrid')) {
+            hybridParams.style.display = 'block';
+        } else {
+            hybridParams.style.display = 'none';
         }
     });
 
@@ -56,6 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     bSlider.addEventListener('input', (e) => {
         bVal.textContent = e.target.value;
+    });
+    alphaSlider.addEventListener('input', (e) => {
+        alphaVal.textContent = e.target.value;
     });
 
     // Toggle Advanced Options block
@@ -96,12 +111,13 @@ document.addEventListener('DOMContentLoaded', () => {
             method: modelSelect.value,
             bm25_k1: parseFloat(k1Slider.value),
             bm25_b: parseFloat(bSlider.value),
+            hybrid_alpha: parseFloat(alphaSlider.value),
             use_additional_features: additionalFeaturesChk.checked,
             top_k: 10
         };
 
         try {
-            const response = await fetch('/api/search', {
+            const response = await fetch(`${GATEWAY_URL}/api/search`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestData)
@@ -140,8 +156,11 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'result-card';
             card.innerHTML = `
                 <div class="result-header">
-                    <h4 class="result-title">${doc.title || `Document ${doc.id}`}</h4>
+                    <h4 class="result-title">${doc.title || `Document`}</h4>
                     <span class="result-score">Sim Score: ${doc.score.toFixed(4)}</span>
+                </div>
+                <div class="result-meta" style="font-size: 0.85em; color: var(--text-secondary); margin-bottom: 8px;">
+                    <strong>ID: ${doc.id}</strong>
                 </div>
                 <p class="result-content">${doc.content}</p>
             `;
@@ -155,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clusteringStatus.style.color = 'var(--text-secondary)';
 
         try {
-            const response = await fetch('/api/cluster', {
+            const response = await fetch(`${GATEWAY_URL}/api/cluster`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -184,18 +203,17 @@ document.addEventListener('DOMContentLoaded', () => {
         valP10.textContent = '...';
         valNdcg.textContent = '...';
 
-        // Fake dataset run results to compute evaluation
         const requestData = {
             dataset: datasetSelect.value,
-            retrieved_results: {
-                "q001": ["doc_001", "doc_002"],
-                "q002": ["doc_002", "doc_003"]
-            },
-            k: 10
+            method: modelSelect.value,
+            use_additional_features: additionalFeaturesChk.checked,
+            bm25_k1: parseFloat(document.getElementById('bm25-k1').value),
+            bm25_b: parseFloat(document.getElementById('bm25-b').value),
+            hybrid_alpha: parseFloat(document.getElementById('hybrid-alpha').value)
         };
 
         try {
-            const response = await fetch('/api/evaluate', {
+            const response = await fetch(`${GATEWAY_URL}/api/evaluate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestData)

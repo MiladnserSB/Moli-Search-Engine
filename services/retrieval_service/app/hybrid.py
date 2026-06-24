@@ -11,12 +11,14 @@ class HybridSearcher:
         self,
         query_tokens,
         query_embedding,
-        top_k=10
+        top_k=10,
+        inverted_index=None
     ):
 
         candidates = self.sparse_scorer.search(
             query_tokens,
-            top_k=100
+            top_k=100,
+            inverted_index=inverted_index
         )
 
         reranked = self.dense_searcher.rerank(
@@ -30,12 +32,15 @@ class HybridSearcher:
         self,
         query_tokens,
         query_embedding,
-        top_k=10
+        top_k=10,
+        inverted_index=None,
+        hybrid_alpha=0.5
     ):
 
         sparse_results = self.sparse_scorer.search(
             query_tokens,
-            top_k=100
+            top_k=100,
+            inverted_index=inverted_index
         )
 
         dense_results = self.dense_searcher.search(
@@ -44,7 +49,60 @@ class HybridSearcher:
         )
 
         fused = reciprocal_rank_fusion(
-            [sparse_results, dense_results]
+            [sparse_results, dense_results],
+            weights=[hybrid_alpha, 1.0 - hybrid_alpha]
         )
 
         return fused[:top_k]
+
+    def search_batch_serial(
+        self,
+        queries_tokens,
+        query_embeddings,
+        top_k=10,
+        inverted_index=None
+    ):
+        sparse_batch_candidates = self.sparse_scorer.search_batch(
+            queries_tokens,
+            top_k=100,
+            inverted_index=inverted_index
+        )
+        
+        batch_results = []
+        for q_idx, candidates in enumerate(sparse_batch_candidates):
+            reranked = self.dense_searcher.rerank(
+                query_embeddings[q_idx],
+                candidates
+            )
+            batch_results.append(reranked[:top_k])
+            
+        return batch_results
+
+    def search_batch_parallel(
+        self,
+        queries_tokens,
+        query_embeddings,
+        top_k=10,
+        inverted_index=None,
+        hybrid_alpha=0.5
+    ):
+        sparse_batch_results = self.sparse_scorer.search_batch(
+            queries_tokens,
+            top_k=100,
+            inverted_index=inverted_index
+        )
+        
+        dense_batch_results = self.dense_searcher.search_batch(
+            query_embeddings,
+            top_k=100
+        )
+        
+        batch_results = []
+        for s_res, d_res in zip(sparse_batch_results, dense_batch_results):
+            fused = reciprocal_rank_fusion(
+                [s_res, d_res],
+                weights=[hybrid_alpha, 1.0 - hybrid_alpha]
+            )
+            batch_results.append(fused[:top_k])
+            
+        return batch_results

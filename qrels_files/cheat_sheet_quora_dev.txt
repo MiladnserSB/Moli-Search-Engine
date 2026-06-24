@@ -1,0 +1,579 @@
+=== CHEAT SHEET FOR QUORA_DEV ===
+This file maps query IDs and texts to their ground-truth relevant document IDs.
+Use these queries on the UI to verify correct retrieval.
+
+Query ID: 100055
+Query Text: What might be some really cool themes for college magazine?
+Relevant Documents:
+  - Document ID: 100054 (relevance: 1)
+--------------------------------------------------
+Query ID: 100192
+Query Text: What personal development blogs can you recommend?
+Relevant Documents:
+  - Document ID: 100193 (relevance: 1)
+--------------------------------------------------
+Query ID: 10024
+Query Text: How do I reset my Gmail password when I don't remember my recovery information?
+Relevant Documents:
+  - Document ID: 118 (relevance: 1)
+  - Document ID: 6953 (relevance: 1)
+  - Document ID: 33695 (relevance: 1)
+  - Document ID: 3875 (relevance: 1)
+  - Document ID: 115735 (relevance: 1)
+  - Document ID: 12018 (relevance: 1)
+  - Document ID: 21153 (relevance: 1)
+  - Document ID: 37121 (relevance: 1)
+  - Document ID: 249357 (relevance: 1)
+  - Document ID: 23753 (relevance: 1)
+--------------------------------------------------
+Query ID: 100344
+Query Text: What is the best content of the e-learning course?
+Relevant Documents:
+  - Document ID: 84729 (relevance: 1)
+  - Document ID: 255414 (relevance: 1)
+  - Document ID: 100343 (relevance: 1)
+  - Document ID: 144671 (relevance: 1)
+--------------------------------------------------
+Query ID: 100392
+Query Text: What is it like to do your articleship at KPMG?
+Relevant Documents:
+  - Document ID: 100391 (relevance: 1)
+--------------------------------------------------
+Query ID: 100734
+Query Text: What are the steps in the water cycle?
+Relevant Documents:
+  - Document ID: 100735 (relevance: 1)
+--------------------------------------------------
+Query ID: 100742
+Query Text: Who is the best actor in world?
+Relevant Documents:
+  - Document ID: 91274 (relevance: 1)
+--------------------------------------------------
+Query ID: 100802
+Query Text: Who is Shahrukh Khan of Hollywood?
+Relevant Documents:
+  - Document ID: 100801 (relevance: 1)
+--------------------------------------------------
+Query ID: 100847
+Query Text: Can we live without love?
+Relevant Documents:
+  - Document ID: 100846 (relevance: 1)
+--------------------------------------------------
+Query ID: 100883
+Query Text: How do I know when a girl loves me?
+Relevant Documents:
+  - Document ID: 50515 (relevance: 1)
+  - Document ID: 294582 (relevance: 1)
+--------------------------------------------------
+Query ID: 100968
+Query Text: Should I buy the iPhone 7 or the iPhone 6S?
+Relevant Documents:
+  - Document ID: 59321 (relevance: 1)
+  - Document ID: 176230 (relevance: 1)
+  - Document ID: 100967 (relevance: 1)
+  - Document ID: 148993 (relevance: 1)
+--------------------------------------------------
+Query ID: 100970
+Query Text: Do guns make Americans safer?
+Relevant Documents:
+  - Document ID: 100969 (relevance: 1)
+  - Document ID: 424185 (relevance: 1)
+--------------------------------------------------
+Query ID: 100995
+Query Text: What direction are you travelling from malaga to gibralter?
+Relevant Documents:
+  - Document ID: 100994 (relevance: 1)
+--------------------------------------------------
+Query ID: 101061
+Query Text: Is it true that time stops inside a black hole?
+Relevant Documents:
+  - Document ID: 143702 (relevance: 1)
+--------------------------------------------------
+Query ID: 10113
+Query Text: Where is starch digested? How is it digested?
+Relevant Documents:
+  - Document ID: 10114 (relevance: 1)
+--------------------------------------------------
+Query ID: 101180
+Query Text: What is the best way to prepare for an HR interview?
+Relevant Documents:
+  - Document ID: 101181 (relevance: 1)
+  - Document ID: 397572 (relevance: 1)
+  - Document ID: 299297 (relevance: 1)
+--------------------------------------------------
+Query ID: 101509
+Query Text: What should be done with the minimum wage?
+Relevant Documents:
+  - Document ID: 101510 (relevance: 1)
+--------------------------------------------------
+Query ID: 10155
+Query Text: How do I use Facebook in China?
+Relevant Documents:
+  - Document ID: 10154 (relevance: 1)
+--------------------------------------------------
+Query ID: 101611
+Query Text: How many root words are there in the English language?
+Relevant Documents:
+  - Document ID: 101612 (relevance: 1)
+--------------------------------------------------
+Query ID: 101621
+Query Text: How one can get a job in ISRO?
+Relevant Documents:
+  - Document ID: 220071 (relevance: 1)
+  - Document ID: 346582 (relevance: 1)
+  - Document ID: 101620 (relevance: 1)
+--------------------------------------------------
+Query ID: 101625
+Query Text: How much euro is printed?
+Relevant Documents:
+  - Document ID: 101624 (relevance: 1)
+--------------------------------------------------
+Query ID: 101707
+Query Text: What movie should I watch in 2017?
+Relevant Documents:
+  - Document ID: 58128 (relevance: 1)
+  - Document ID: 101708 (relevance: 1)
+  - Document ID: 58129 (relevance: 1)
+--------------------------------------------------
+Query ID: 101713
+Query Text: What are the steps to follow in social media marketing?
+Relevant Documents:
+  - Document ID: 101714 (relevance: 1)
+--------------------------------------------------
+Query ID: 10188
+Query Text: What did you write in your admission essay for college?
+Relevant Documents:
+  - Document ID: 10189 (relevance: 1)
+--------------------------------------------------
+Query ID: 101995
+Query Text: Why is healthcare so much more expensive in the US than the rest of the world?
+Relevant Documents:
+  - Document ID: 331517 (relevance: 1)
+  - Document ID: 101996 (relevance: 1)
+--------------------------------------------------
+Query ID: 102059
+Query Text: What to do when nothing works ?
+Relevant Documents:
+  - Document ID: 102058 (relevance: 1)
+--------------------------------------------------
+Query ID: 102161
+Query Text: Would ISIS ever dare to attack Iran?
+Relevant Documents:
+  - Document ID: 102160 (relevance: 1)
+--------------------------------------------------
+Query ID: 102199
+Query Text: What is asked in TCS interview?
+Relevant Documents:
+  - Document ID: 102198 (relevance: 1)
+--------------------------------------------------
+Query ID: 102409
+Query Text: What are women's thoughts on nice guys?
+Relevant Documents:
+  - Document ID: 102408 (relevance: 1)
+--------------------------------------------------
+Query ID: 102487
+Query Text: What is social media?
+Relevant Documents:
+  - Document ID: 44077 (relevance: 1)
+  - Document ID: 44076 (relevance: 1)
+--------------------------------------------------
+Query ID: 102566
+Query Text: Will "Akhand Hindustan" be recreated after India finally attains an Islamic majority?
+Relevant Documents:
+  - Document ID: 102567 (relevance: 1)
+--------------------------------------------------
+Query ID: 102605
+Query Text: How do I double my money?
+Relevant Documents:
+  - Document ID: 102604 (relevance: 1)
+--------------------------------------------------
+Query ID: 102640
+Query Text: Why are women treated so badly in India?
+Relevant Documents:
+  - Document ID: 102641 (relevance: 1)
+--------------------------------------------------
+Query ID: 102763
+Query Text: Why was Quora down March 31, 2016?
+Relevant Documents:
+  - Document ID: 20640 (relevance: 1)
+  - Document ID: 20639 (relevance: 1)
+--------------------------------------------------
+Query ID: 102979
+Query Text: What is the rate of change of acceleration?
+Relevant Documents:
+  - Document ID: 102978 (relevance: 1)
+--------------------------------------------------
+Query ID: 103054
+Query Text: Can I insert my signature at the end of my Quora answers?
+Relevant Documents:
+  - Document ID: 103055 (relevance: 1)
+--------------------------------------------------
+Query ID: 103069
+Query Text: How can I root my Android device?
+Relevant Documents:
+  - Document ID: 61062 (relevance: 1)
+  - Document ID: 187488 (relevance: 1)
+  - Document ID: 64026 (relevance: 1)
+  - Document ID: 159124 (relevance: 1)
+  - Document ID: 279588 (relevance: 1)
+  - Document ID: 255368 (relevance: 1)
+--------------------------------------------------
+Query ID: 103148
+Query Text: Is there any way I can reach out to Dushka Zapata?
+Relevant Documents:
+  - Document ID: 103149 (relevance: 1)
+--------------------------------------------------
+Query ID: 103289
+Query Text: What made you start using Quora?
+Relevant Documents:
+  - Document ID: 103288 (relevance: 1)
+--------------------------------------------------
+Query ID: 103334
+Query Text: How do I have a safe sex without a condom?
+Relevant Documents:
+  - Document ID: 3998 (relevance: 1)
+--------------------------------------------------
+Query ID: 103365
+Query Text: What is the most horrible thing you have ever done?
+Relevant Documents:
+  - Document ID: 103364 (relevance: 1)
+--------------------------------------------------
+Query ID: 103425
+Query Text: Why are trees green in colour?
+Relevant Documents:
+  - Document ID: 103426 (relevance: 1)
+--------------------------------------------------
+Query ID: 103884
+Query Text: What triggered the Battle of Dunkirk?
+Relevant Documents:
+  - Document ID: 103883 (relevance: 1)
+--------------------------------------------------
+Query ID: 104146
+Query Text: How are Near and L related in Death Note?
+Relevant Documents:
+  - Document ID: 104147 (relevance: 1)
+--------------------------------------------------
+Query ID: 104169
+Query Text: How can I achieve a successful career and life?
+Relevant Documents:
+  - Document ID: 104170 (relevance: 1)
+--------------------------------------------------
+Query ID: 104263
+Query Text: What's the best thing you learnt from Quora?
+Relevant Documents:
+  - Document ID: 104264 (relevance: 1)
+--------------------------------------------------
+Query ID: 104507
+Query Text: What's the hardest bug you've debugged?
+Relevant Documents:
+  - Document ID: 509282 (relevance: 1)
+--------------------------------------------------
+Query ID: 104522
+Query Text: What should one do to become a public speaker?
+Relevant Documents:
+  - Document ID: 343421 (relevance: 1)
+  - Document ID: 104521 (relevance: 1)
+--------------------------------------------------
+Query ID: 10453
+Query Text: Why do people stand I long queue to meet dadi hirudaya mohini at Brahma kumari centers? Is it right to do so?
+Relevant Documents:
+  - Document ID: 10452 (relevance: 1)
+--------------------------------------------------
+Query ID: 104542
+Query Text: Can a long-distance relationship last?
+Relevant Documents:
+  - Document ID: 104541 (relevance: 1)
+--------------------------------------------------
+Query ID: 104545
+Query Text: How do I start learning cloud computing?
+Relevant Documents:
+  - Document ID: 96371 (relevance: 1)
+  - Document ID: 96370 (relevance: 1)
+  - Document ID: 258527 (relevance: 1)
+  - Document ID: 307964 (relevance: 1)
+--------------------------------------------------
+Query ID: 104582
+Query Text: What makes comic books worth reading?
+Relevant Documents:
+  - Document ID: 104581 (relevance: 1)
+--------------------------------------------------
+Query ID: 104595
+Query Text: What is your review of Raman Raghav 2.0 (2016 movie)?
+Relevant Documents:
+  - Document ID: 104594 (relevance: 1)
+--------------------------------------------------
+Query ID: 104651
+Query Text: What are some uses of Punnett squares?
+Relevant Documents:
+  - Document ID: 104652 (relevance: 1)
+--------------------------------------------------
+Query ID: 104653
+Query Text: Which is that one incident which made u feel God exists?
+Relevant Documents:
+  - Document ID: 56036 (relevance: 1)
+--------------------------------------------------
+Query ID: 104727
+Query Text: How can you know if someone is lying to you?
+Relevant Documents:
+  - Document ID: 32766 (relevance: 1)
+  - Document ID: 104728 (relevance: 1)
+  - Document ID: 233501 (relevance: 1)
+  - Document ID: 215545 (relevance: 1)
+  - Document ID: 18820 (relevance: 1)
+  - Document ID: 115673 (relevance: 1)
+  - Document ID: 24670 (relevance: 1)
+  - Document ID: 18821 (relevance: 1)
+  - Document ID: 116118 (relevance: 1)
+  - Document ID: 6424 (relevance: 1)
+--------------------------------------------------
+Query ID: 104812
+Query Text: What do Chinese people eat for breakfast?
+Relevant Documents:
+  - Document ID: 104811 (relevance: 1)
+--------------------------------------------------
+Query ID: 105242
+Query Text: How do I delete Gmail from iPhone without deleting from server?
+Relevant Documents:
+  - Document ID: 105241 (relevance: 1)
+--------------------------------------------------
+Query ID: 105261
+Query Text: How can I take excellent care of my teeth?
+Relevant Documents:
+  - Document ID: 143452 (relevance: 1)
+  - Document ID: 221073 (relevance: 1)
+  - Document ID: 105260 (relevance: 1)
+--------------------------------------------------
+Query ID: 105386
+Query Text: What is mutualism in biology? What are some examples?
+Relevant Documents:
+  - Document ID: 105385 (relevance: 1)
+--------------------------------------------------
+Query ID: 105418
+Query Text: How do you tie a tie?
+Relevant Documents:
+  - Document ID: 96673 (relevance: 1)
+  - Document ID: 96674 (relevance: 1)
+--------------------------------------------------
+Query ID: 105515
+Query Text: What are the factors that can make your credit score drop?
+Relevant Documents:
+  - Document ID: 325058 (relevance: 1)
+  - Document ID: 105516 (relevance: 1)
+--------------------------------------------------
+Query ID: 105592
+Query Text: Which chicken fast food place has the best fried chicken?
+Relevant Documents:
+  - Document ID: 105593 (relevance: 1)
+--------------------------------------------------
+Query ID: 105697
+Query Text: How do I identify true love?
+Relevant Documents:
+  - Document ID: 104335 (relevance: 1)
+  - Document ID: 104334 (relevance: 1)
+--------------------------------------------------
+Query ID: 105725
+Query Text: What causes my first period to draw brown blood?
+Relevant Documents:
+  - Document ID: 49604 (relevance: 1)
+  - Document ID: 49605 (relevance: 1)
+  - Document ID: 198007 (relevance: 1)
+  - Document ID: 105726 (relevance: 1)
+--------------------------------------------------
+Query ID: 105869
+Query Text: How I can apply for cds exam 2016?
+Relevant Documents:
+  - Document ID: 536425 (relevance: 1)
+--------------------------------------------------
+Query ID: 105892
+Query Text: How can I get rid of a very oily face?
+Relevant Documents:
+  - Document ID: 105891 (relevance: 1)
+--------------------------------------------------
+Query ID: 106008
+Query Text: How do I get over my fear of math?
+Relevant Documents:
+  - Document ID: 106009 (relevance: 1)
+--------------------------------------------------
+Query ID: 106236
+Query Text: What are some of the best books about diplomacy?
+Relevant Documents:
+  - Document ID: 192605 (relevance: 1)
+  - Document ID: 106235 (relevance: 1)
+--------------------------------------------------
+Query ID: 106420
+Query Text: What is your review of Leonard Cohen?
+Relevant Documents:
+  - Document ID: 106419 (relevance: 1)
+--------------------------------------------------
+Query ID: 10648
+Query Text: How can I become a CFO?
+Relevant Documents:
+  - Document ID: 10647 (relevance: 1)
+--------------------------------------------------
+Query ID: 106656
+Query Text: How is the magnifying power of the microscope calculated?
+Relevant Documents:
+  - Document ID: 176035 (relevance: 1)
+--------------------------------------------------
+Query ID: 106721
+Query Text: How did you catch your spouse cheating?
+Relevant Documents:
+  - Document ID: 46447 (relevance: 1)
+  - Document ID: 51654 (relevance: 1)
+  - Document ID: 25977 (relevance: 1)
+  - Document ID: 51655 (relevance: 1)
+  - Document ID: 120330 (relevance: 1)
+  - Document ID: 38958 (relevance: 1)
+  - Document ID: 29614 (relevance: 1)
+  - Document ID: 235045 (relevance: 1)
+  - Document ID: 35751 (relevance: 1)
+  - Document ID: 72639 (relevance: 1)
+--------------------------------------------------
+Query ID: 106743
+Query Text: What are the best places to hangout with friends in delhi?
+Relevant Documents:
+  - Document ID: 106742 (relevance: 1)
+--------------------------------------------------
+Query ID: 106820
+Query Text: How is the Linnaean system of classification used?
+Relevant Documents:
+  - Document ID: 106819 (relevance: 1)
+--------------------------------------------------
+Query ID: 106862
+Query Text: What do I do to improve my life everyday?
+Relevant Documents:
+  - Document ID: 106863 (relevance: 1)
+--------------------------------------------------
+Query ID: 107106
+Query Text: Film Direction: What are some tips for a first time film director?
+Relevant Documents:
+  - Document ID: 107107 (relevance: 1)
+--------------------------------------------------
+Query ID: 107113
+Query Text: What's Marc Bodnick going to do after Quora?
+Relevant Documents:
+  - Document ID: 390469 (relevance: 1)
+  - Document ID: 425535 (relevance: 1)
+  - Document ID: 176379 (relevance: 1)
+--------------------------------------------------
+Query ID: 107156
+Query Text: Who will be the next ameracan president?
+Relevant Documents:
+  - Document ID: 34177 (relevance: 1)
+  - Document ID: 227363 (relevance: 1)
+  - Document ID: 65153 (relevance: 1)
+  - Document ID: 65154 (relevance: 1)
+--------------------------------------------------
+Query ID: 10722
+Query Text: What does Shri Narendra Modi as a prime minister expects from the citizens or youth of India?
+Relevant Documents:
+  - Document ID: 10723 (relevance: 1)
+--------------------------------------------------
+Query ID: 107389
+Query Text: What could replace swimming, tulips, fashions and butterflies for a more masculine bedroom because it's too girly?
+Relevant Documents:
+  - Document ID: 107388 (relevance: 1)
+--------------------------------------------------
+Query ID: 107457
+Query Text: Why would Assad bomb his own people in Aleppo?
+Relevant Documents:
+  - Document ID: 107458 (relevance: 1)
+--------------------------------------------------
+Query ID: 107489
+Query Text: What are the most fun things to do in Cancun?
+Relevant Documents:
+  - Document ID: 107488 (relevance: 1)
+  - Document ID: 354676 (relevance: 1)
+  - Document ID: 404217 (relevance: 1)
+--------------------------------------------------
+Query ID: 107606
+Query Text: I'm planning a one-day trip with my friends near Bangalore. What are the best places to visit?
+Relevant Documents:
+  - Document ID: 158379 (relevance: 1)
+  - Document ID: 301546 (relevance: 1)
+  - Document ID: 241140 (relevance: 1)
+  - Document ID: 107607 (relevance: 1)
+--------------------------------------------------
+Query ID: 107646
+Query Text: How do I prepare for TCS IT Wiz?
+Relevant Documents:
+  - Document ID: 107647 (relevance: 1)
+--------------------------------------------------
+Query ID: 107701
+Query Text: How would you decrypt an encrypted file knowing that it is an image file without knowing the extension of the file?
+Relevant Documents:
+  - Document ID: 107700 (relevance: 1)
+  - Document ID: 327169 (relevance: 1)
+--------------------------------------------------
+Query ID: 107770
+Query Text: How do you deal with a narcissistic boss?
+Relevant Documents:
+  - Document ID: 107769 (relevance: 1)
+--------------------------------------------------
+Query ID: 107849
+Query Text: Will the recent assassination of the Russian ambassador start World War 3?
+Relevant Documents:
+  - Document ID: 107850 (relevance: 1)
+--------------------------------------------------
+Query ID: 1079
+Query Text: How do I become a good computer science engineer?
+Relevant Documents:
+  - Document ID: 260818 (relevance: 1)
+  - Document ID: 1078 (relevance: 1)
+--------------------------------------------------
+Query ID: 10810
+Query Text: What's the fastest tank ever to be made?
+Relevant Documents:
+  - Document ID: 10809 (relevance: 1)
+  - Document ID: 61284 (relevance: 1)
+--------------------------------------------------
+Query ID: 108130
+Query Text: What do plants use sunlight energy for?
+Relevant Documents:
+  - Document ID: 328301 (relevance: 1)
+--------------------------------------------------
+Query ID: 108179
+Query Text: What is it like to have autism?
+Relevant Documents:
+  - Document ID: 108180 (relevance: 1)
+--------------------------------------------------
+Query ID: 108269
+Query Text: What are the things which make you happy?
+Relevant Documents:
+  - Document ID: 92697 (relevance: 1)
+--------------------------------------------------
+Query ID: 108438
+Query Text: Why is Hush puppies so hard to find in US?
+Relevant Documents:
+  - Document ID: 108439 (relevance: 1)
+--------------------------------------------------
+Query ID: 108480
+Query Text: How do I crack UPSC CSE in the first attempt while being under any circumstances?
+Relevant Documents:
+  - Document ID: 108479 (relevance: 1)
+--------------------------------------------------
+Query ID: 108497
+Query Text: What is the difference between shield and composite volcanoes?
+Relevant Documents:
+  - Document ID: 108498 (relevance: 1)
+--------------------------------------------------
+Query ID: 108684
+Query Text: Where can I get cheap and best clothings at Bangalore?
+Relevant Documents:
+  - Document ID: 411115 (relevance: 1)
+--------------------------------------------------
+Query ID: 108687
+Query Text: What are the perks of being an IFS officer?
+Relevant Documents:
+  - Document ID: 108686 (relevance: 1)
+--------------------------------------------------
+Query ID: 108711
+Query Text: Can I male human get a dog pregnant?
+Relevant Documents:
+  - Document ID: 108712 (relevance: 1)
+--------------------------------------------------
+Query ID: 108734
+Query Text: How do you cure premature ejaculation?
+Relevant Documents:
+  - Document ID: 108735 (relevance: 1)
+--------------------------------------------------

@@ -209,7 +209,7 @@ from fastapi import FastAPI, BackgroundTasks, HTTPException
 from pydantic import BaseModel
 from typing import Optional
 from contextlib import asynccontextmanager
-from preprocessor import Preprocessor
+from .preprocessor import Preprocessor
 
 # كاشف آمن لمكان ملف قاعدة البيانات (يعمل في دكر ومحلياً تلقائياً)
 DB_PATH = "/app/data/ir_dataset_store.db"
@@ -230,6 +230,15 @@ class SinglePreprocessRequest(BaseModel):
     text: str
     dataset_name: Optional[str] = "Query"
     pipeline_type: Optional[str] = "classical"  # "classical" (TF-IDF/BM25) أو "neural" (BERT/Embeddings)
+    stem: Optional[bool] = False
+    lemmatize: Optional[bool] = True
+    run_semantics: Optional[bool] = False
+    run_spellcheck: Optional[bool] = False
+
+class BatchPreprocessRequest(BaseModel):
+    texts: list[str]
+    dataset_name: Optional[str] = "Batch"
+    pipeline_type: Optional[str] = "classical"
     stem: Optional[bool] = False
     lemmatize: Optional[bool] = True
     run_semantics: Optional[bool] = False
@@ -263,6 +272,30 @@ def preprocess_single_text(request: SinglePreprocessRequest):
         "tokens": tokens,
         "pipeline_type": request.pipeline_type,
         "semantics": sentiment
+    }
+
+@app.post("/preprocess/batch")
+def preprocess_batch_text(request: BatchPreprocessRequest):
+    """معالجة دفعية للنصوص والاستعلامات دفعة واحدة لتسريع التقييم"""
+    results = preprocessor.preprocess_batch(
+        texts=request.texts,
+        dataset_name=request.dataset_name,
+        pipeline_type=request.pipeline_type,
+        stem=request.stem,
+        lemmatize=request.lemmatize,
+        verbose=True,
+        run_semantics=request.run_semantics,
+        run_spellcheck=request.run_spellcheck
+    )
+    return {
+        "results": [
+            {
+                "processed_text": res[0],
+                "tokens": res[1],
+                "semantics": res[2]
+            }
+            for res in results
+        ]
     }
 
 
@@ -396,3 +429,7 @@ def preprocess_entire_database(request: DatabaseBatchRequest, background_tasks: 
         
     background_tasks.add_task(database_batch_worker, request.dataset_name, request.pipeline_type, request.batch_size)
     return {"message": f"Database pipeline for '{request.dataset_name}' [{request.pipeline_type}] successfully queued as a background process."}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=True)

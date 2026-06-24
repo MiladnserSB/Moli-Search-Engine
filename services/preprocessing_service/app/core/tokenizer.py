@@ -26,12 +26,10 @@ class TextTokenizer:
 
     def _is_valid_token(self, token: str) -> bool:
         """Validates if a word consists of standard alphanumeric elements, respecting valid internal punctuation loops."""
-        if token.isalnum():
-            return True
         clean_t = token.replace("'", "").replace("-", "")
         return clean_t.isalnum()
 
-    def tokenize_and_filter(self, cleaned_text: str, remove_stops: bool = True, is_lowercased: bool = False) -> List[str]:
+    def tokenize_and_filter(self, cleaned_text: str, remove_stops: bool = True, is_lowercased: bool = True) -> List[str]:
         """Splits texts into logical tokens while filtering out vocabulary noise."""
         if not cleaned_text:
             return []
@@ -41,7 +39,7 @@ class TextTokenizer:
         
         for t in tokens:
             if self._is_valid_token(t):
-                t_lower = t if is_lowercased else t.lower()
+                t_lower = t.lower()
                 
                 # CRITICAL FIX: Ensure digits/numbers aren't discarded by a blanket string-length evaluation rule
                 if len(t) > 1 or t_lower.isdigit() or t_lower in self.valid_singles:

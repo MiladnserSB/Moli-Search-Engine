@@ -11,12 +11,36 @@ class QueryRequest(BaseModel):
     query: str
     dataset: str
     method: str  # 'bm25', 'vsm', 'embedding', 'hybrid_serial', 'hybrid_parallel'
+    preprocessed_query: Optional[str] = None
     bm25_k1: Optional[float] = 1.5
     bm25_b: Optional[float] = 0.75
+    hybrid_alpha: Optional[float] = 0.5
     use_additional_features: Optional[bool] = False
     top_k: Optional[int] = 10
+    retrieve_text: Optional[bool] = True
 
 class SearchResponse(BaseModel):
     results: List[DocumentSchema]
     refined_query: Optional[str] = None
     time_taken_ms: float
+
+class BatchQueryRequest(BaseModel):
+    queries: List[str]
+    dataset: str
+    method: str  # 'bm25', 'vsm', 'embedding', 'hybrid_serial', 'hybrid_parallel'
+    preprocessed_queries: Optional[List[str]] = None
+    bm25_k1: Optional[float] = 1.5
+    bm25_b: Optional[float] = 0.75
+    hybrid_alpha: Optional[float] = 0.5
+    use_additional_features: Optional[bool] = False
+    top_k: Optional[int] = 10
+    retrieve_text: Optional[bool] = False
+
+class BatchQueryResult(BaseModel):
+    query: str
+    results: List[DocumentSchema]
+
+class BatchSearchResponse(BaseModel):
+    results: List[BatchQueryResult]
+    time_taken_ms: float
+

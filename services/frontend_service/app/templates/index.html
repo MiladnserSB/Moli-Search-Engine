@@ -1,158 +1,258 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Information Retrieval Hub</title>
+    <title>Moli Search Engine</title>
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <!-- ChartJS for Evaluation -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="/static/css/styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
+  <body>
     <div class="app-container">
-        <!-- Sidebar Controls -->
-        <aside class="sidebar">
-            <div class="brand">
-                <span class="brand-icon">⚡</span>
-                <h2>IR Search Engine</h2>
+      <!-- Sidebar Controls -->
+      <aside class="sidebar">
+        <div class="brand">
+          <img
+            src="/static/logo.png"
+            class="brand-logo"
+            alt="Moli Search Engine Logo"
+          />
+        </div>
+
+        <form id="search-config-form">
+          <!-- Dataset Selection -->
+          <div class="control-group">
+            <label for="dataset-select">Active Dataset</label>
+            <select id="dataset-select" name="dataset">
+              <option value="quora_dev" selected>
+                Quora Dataset (Questions)
+              </option>
+              <option value="lotte_lifestyle_dev">
+                Lotte Lifestyle Dataset (Forum)
+              </option>
+            </select>
+          </div>
+
+          <!-- Model Selection -->
+          <div class="control-group">
+            <label for="model-select">Retrieval Model</label>
+            <select id="model-select" name="method">
+              <option value="bm25" selected>Probabilistic: BM25</option>
+              <option value="vsm">Vector Space Model (TF-IDF)</option>
+              <option value="embedding">Dense Embeddings (BERT)</option>
+              <option value="hybrid_serial">Hybrid Model: Serial</option>
+              <option value="hybrid_parallel">Hybrid Model: Parallel</option>
+            </select>
+          </div>
+
+          <!-- Hybrid Parameters -->
+          <div
+            class="control-group"
+            id="hybrid-parameters"
+            style="display: none"
+          >
+            <div class="slider-header">
+              <label>Hybrid Weight (α)</label>
+              <span id="alpha-val">0.5</span>
             </div>
-            
-            <form id="search-config-form">
-                <!-- Dataset Selection -->
-                <div class="control-group">
-                    <label for="dataset-select">Active Dataset</label>
-                    <select id="dataset-select" name="dataset">
-                        <option value="cranfield" selected>Cranfield (Standard)</option>
-                        <option value="vaswani">Vaswani (>10K)</option>
-                        <option value="custom_dataset">Custom Selected Dataset</option>
-                    </select>
-                </div>
+            <input
+              type="range"
+              id="hybrid-alpha"
+              min="0.0"
+              max="1.0"
+              step="0.1"
+              value="0.5"
+            />
+            <small class="help-text"
+              >Weights BM25 vs Dense model (α = BM25, 1-α = Dense).</small
+            >
+          </div>
 
-                <!-- Model Selection -->
-                <div class="control-group">
-                    <label for="model-select">Retrieval Model</label>
-                    <select id="model-select" name="method">
-                        <option value="bm25" selected>Probabilistic: BM25</option>
-                        <option value="vsm">Vector Space Model (TF-IDF)</option>
-                        <option value="embedding">Dense Embeddings (BERT)</option>
-                        <option value="hybrid_serial">Hybrid Model: Serial</option>
-                        <option value="hybrid_parallel">Hybrid Model: Parallel</option>
-                    </select>
-                </div>
-
-                <!-- Parameter Controls -->
-                <div class="control-group" id="bm25-parameters">
-                    <div class="slider-header">
-                        <label>BM25 Parameter k₁</label>
-                        <span id="k1-val">1.5</span>
-                    </div>
-                    <input type="range" id="bm25-k1" min="0.5" max="3.0" step="0.1" value="1.5">
-                    
-                    <div class="slider-header">
-                        <label>BM25 Parameter b</label>
-                        <span id="b-val">0.75</span>
-                    </div>
-                    <input type="range" id="bm25-b" min="0.0" max="1.0" step="0.05" value="0.75">
-                </div>
-
-                <!-- Toggles for Additional Features -->
-                <div class="control-group">
-                    <label class="toggle-container">
-                        <input type="checkbox" id="additional-features-chk">
-                        <span class="toggle-slider"></span>
-                        Enable Advanced Features
-                    </label>
-                    <small class="help-text">Includes query spelling correction, vector stores, and document clusters.</small>
-                </div>
-                
-                <div class="control-group active-advanced-features" id="advanced-options" style="display: none;">
-                    <label for="clusters-count">Clustering - Number of Clusters</label>
-                    <input type="number" id="clusters-count" min="2" max="50" value="10">
-                    <button type="button" id="trigger-clustering-btn" class="secondary-btn">Cluster Documents</button>
-                    <div id="clustering-status" class="status-msg"></div>
-                </div>
-            </form>
-
-            <div class="evaluation-trigger">
-                <h3>System Evaluation</h3>
-                <button type="button" id="run-evaluation-btn" class="primary-btn pulse">Run Complete Evaluation</button>
+          <!-- Parameter Controls -->
+          <div class="control-group" id="bm25-parameters">
+            <div class="slider-header">
+              <label>BM25 Parameter k₁</label>
+              <span id="k1-val">1.5</span>
             </div>
-        </aside>
+            <input
+              type="range"
+              id="bm25-k1"
+              min="0.5"
+              max="3.0"
+              step="0.1"
+              value="1.5"
+            />
 
-        <!-- Main Content Area -->
-        <main class="main-content">
-            <!-- Search bar header -->
-            <section class="search-header">
-                <div class="search-bar-wrapper">
-                    <input type="text" id="search-input" placeholder="Type your natural language query here..." autocomplete="off">
-                    <button type="button" id="search-btn">
-                        <span>🔍</span> Search
-                    </button>
-                </div>
-                <div id="query-refinement-banner" class="refinement-banner" style="display: none;">
-                    <span>Did you mean:</span> <a href="#" id="suggested-query-link">...</a>
-                </div>
-            </section>
+            <div class="slider-header">
+              <label>BM25 Parameter b</label>
+              <span id="b-val">0.75</span>
+            </div>
+            <input
+              type="range"
+              id="bm25-b"
+              min="0.0"
+              max="1.0"
+              step="0.05"
+              value="0.75"
+            />
+          </div>
 
-            <!-- Results Section -->
-            <section class="results-container">
-                <div class="results-metadata" id="results-count-meta">
-                    Enter a query to begin searching.
-                </div>
-                
-                <div id="search-results-list" class="results-list">
-                    <!-- Cards will be dynamically injected here -->
-                    <div class="welcome-card">
-                        <h3>Welcome to the IR Hub</h3>
-                        <p>This SOA search engine integrates advanced Natural Language Preprocessing, VSM, BM25, Neural Embeddings, Hybrid retrieval scoring, Vector Stores, and document clustering.</p>
-                        <div class="welcome-stats">
-                            <div class="stat-badge">🚀 SOA-Compliant</div>
-                            <div class="stat-badge">🧠 BERT Embeddings</div>
-                            <div class="stat-badge">📊 Custom Analytics</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+          <!-- Toggles for Additional Features -->
+          <div class="control-group">
+            <label class="toggle-container">
+              <input type="checkbox" id="additional-features-chk" />
+              <span class="toggle-slider"></span>
+              Enable Advanced Features
+            </label>
+            <small class="help-text"
+              >Includes query spelling correction, vector stores, and document
+              clusters.</small
+            >
+          </div>
 
-            <!-- Evaluation Dashboard Section -->
-            <section class="evaluation-section" id="evaluation-dash" style="display: none;">
-                <div class="section-header">
-                    <h2>System Metrics & Evaluation</h2>
-                    <button class="close-btn" id="close-eval-btn">×</button>
-                </div>
-                <div class="eval-grid">
-                    <div class="chart-card">
-                        <canvas id="metricsChart"></canvas>
-                    </div>
-                    <div class="metrics-cards">
-                        <div class="metric-card">
-                            <span class="metric-title">MAP</span>
-                            <span class="metric-value" id="val-map">-</span>
-                        </div>
-                        <div class="metric-card">
-                            <span class="metric-title">Recall</span>
-                            <span class="metric-value" id="val-recall">-</span>
-                        </div>
-                        <div class="metric-card">
-                            <span class="metric-title">Precision@10</span>
-                            <span class="metric-value" id="val-p10">-</span>
-                        </div>
-                        <div class="metric-card">
-                            <span class="metric-title">nDCG</span>
-                            <span class="metric-value" id="val-ndcg">-</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
+          <div
+            class="control-group active-advanced-features"
+            id="advanced-options"
+            style="display: none"
+          >
+            <label for="clusters-count">Clustering - Number of Clusters</label>
+            <input
+              type="number"
+              id="clusters-count"
+              min="2"
+              max="50"
+              value="10"
+            />
+            <button
+              type="button"
+              id="trigger-clustering-btn"
+              class="secondary-btn"
+            >
+              Cluster Documents
+            </button>
+            <div id="clustering-status" class="status-msg"></div>
+          </div>
+        </form>
+
+        <div class="evaluation-trigger">
+          <h3>System Evaluation</h3>
+          <button
+            type="button"
+            id="run-evaluation-btn"
+            class="primary-btn pulse"
+          >
+            Run Complete Evaluation
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="main-content">
+        <!-- Search bar header -->
+        <section class="search-header">
+          <div
+            class="search-bar-wrapper"
+            style="position: relative; width: 100%"
+          >
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Type your natural language query here..."
+              autocomplete="off"
+            />
+            <button type="button" id="search-btn">
+              <span>🔍</span> Search
+            </button>
+            <div
+              id="autocomplete-dropdown"
+              class="autocomplete-list"
+              style="display: none"
+            ></div>
+          </div>
+          <div
+            id="query-refinement-banner"
+            class="refinement-banner"
+            style="display: none"
+          >
+            <span>Did you mean:</span>
+            <a href="#" id="suggested-query-link">...</a>
+          </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-container">
+          <div class="results-metadata" id="results-count-meta"></div>
+
+          <div id="search-results-list" class="results-list">
+            <!-- Cards will be dynamically injected here -->
+            <div class="welcome-card">
+              <h3>Welcome to Moli Search Engine</h3>
+              <p>
+                A simple, elegant, and comfortable search interface integrating
+                advanced Probabilistic BM25, Vector Space Model, Dense Neural
+                Embeddings, Hybrid Retrieval, Vector Stores, and document
+                clustering.
+              </p>
+              <div class="welcome-stats">
+                <div class="stat-badge">🚀 SOA-Compliant</div>
+                <div class="stat-badge">🧠 BERT Embeddings</div>
+                <div class="stat-badge">📊 Custom Analytics</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Evaluation Dashboard Section -->
+        <section
+          class="evaluation-section"
+          id="evaluation-dash"
+          style="display: none"
+        >
+          <div class="section-header">
+            <h2>System Metrics & Evaluation</h2>
+            <button class="close-btn" id="close-eval-btn">×</button>
+          </div>
+          <div class="eval-grid">
+            <div class="chart-card">
+              <canvas id="metricsChart"></canvas>
+            </div>
+            <div class="metrics-cards">
+              <div class="metric-card">
+                <span class="metric-title">MAP</span>
+                <span class="metric-value" id="val-map">-</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-title">Recall</span>
+                <span class="metric-value" id="val-recall">-</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-title">Precision@10</span>
+                <span class="metric-value" id="val-p10">-</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-title">nDCG</span>
+                <span class="metric-value" id="val-ndcg">-</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
 
     <!-- UI Logic Script -->
+    <script>
+      const GATEWAY_URL = "http://127.0.0.1:8000";
+    </script>
     <script src="/static/js/app.js"></script>
-</body>
+  </body>
 </html>
