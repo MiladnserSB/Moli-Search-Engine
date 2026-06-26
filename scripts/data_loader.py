@@ -7,31 +7,25 @@ logger = logging.getLogger(__name__)
 
 class IRDatasetDownloader:
     """Automated extraction architecture designed to stream raw IR datasets securely into persistent tables."""
-
     def __init__(self, datasets_config: List[Dict[str, str]]):
         self.datasets = datasets_config
-
     def is_already_downloaded(self, cursor, db_label: str) -> bool:
         """Validates if target repository cluster already exists within internal storage blocks."""
         cursor.execute(
             "SELECT COUNT(*) FROM documents WHERE dataset_name = ?", (db_label,)
         )
         return cursor.fetchone()[0] > 0
-
     def save_documents(self, cursor, db_label: str, dataset) -> int:
         """Extracts text documents iteratively, inserting chunks into storage blocks to protect RAM."""
         doc_count = 0
         buffer = []
         batch_size = 50000
-        
         print(ll := f"   -> Extracting raw Documents (Batch Size: {batch_size})...")
         for doc in dataset.docs_iter():
             doc_id = str(doc.doc_id)
-            
             # Robust property validation fallback structure
             text = getattr(doc, "text", "") or ""
             title = getattr(doc, "title", "") or ""
-            
             full_text = f"{title}. {text}" if title and text else (title or text)
 
             if full_text:
@@ -45,7 +39,6 @@ class IRDatasetDownloader:
                 )
                 print(f"      * Checkpoint: Saved {doc_count} total documents into database...")
                 buffer = []
-                
         if buffer:
             cursor.executemany(
                 "INSERT INTO documents (dataset_name, doc_id, text) VALUES (?, ?, ?)",
@@ -59,16 +52,13 @@ class IRDatasetDownloader:
         query_count = 0
         buffer = []
         batch_size = 10000
-        
         if dataset.has_queries():
             print(f"   -> Extracting Evaluation Queries (Batch Size: {batch_size})...")
             for query in dataset.queries_iter():
                 query_id = str(query.query_id)
-                
                 text = getattr(query, "text", "")
                 if not text:
                     text = getattr(query, "query", "")
-                    
                 if text:
                     buffer.append((db_label, query_id, text))
                     query_count += 1
@@ -95,13 +85,11 @@ class IRDatasetDownloader:
         qrel_count = 0
         buffer = []
         batch_size = 50000
-        
         if dataset.has_qrels():
             print(f"   -> Extracting Ground-Truth Judgments Matrix (Qrels Batch Size: {batch_size})...")
             for qrel in dataset.qrels_iter():
                 buffer.append((db_label, str(qrel.query_id), str(qrel.doc_id), int(qrel.relevance)))
                 qrel_count += 1
-                
                 if len(buffer) >= batch_size:
                     cursor.executemany(
                         "INSERT INTO qrels (dataset_name, query_id, doc_id, relevance) VALUES (?, ?, ?, ?)",

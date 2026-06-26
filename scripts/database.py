@@ -9,7 +9,6 @@ def get_db_connection() -> sqlite3.Connection:
     os.makedirs(BASE_DATA_DIR, exist_ok=True)
     # تمديد الـ timeout إلى 60 ثانية يمنع الحاويات من الانهيار إذا كانت هناك خدمة أخرى تقرأ من الملف
     return sqlite3.connect(DB_PATH, timeout=60.0)
-
 def init_database():
     """Initializes comprehensive storage schematics, relational entities, and key lookup indices."""
     query_create_documents = '''
@@ -20,7 +19,6 @@ def init_database():
             text TEXT
         )
     '''
-    
     query_create_queries = '''
         CREATE TABLE IF NOT EXISTS queries (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,7 +27,6 @@ def init_database():
             text TEXT
         )
     '''
-    
     query_create_qrels = '''
         CREATE TABLE IF NOT EXISTS qrels (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,7 +45,6 @@ def init_database():
             processed_text TEXT
         )
     '''
-    
     query_create_embeddings = '''
         CREATE TABLE IF NOT EXISTS document_embeddings (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -61,20 +57,17 @@ def init_database():
 
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        
         # Build Schema Tables
         cursor.execute(query_create_documents)
         cursor.execute(query_create_queries)
         cursor.execute(query_create_qrels)
         cursor.execute(query_create_processed)
         cursor.execute(query_create_embeddings)
-        
         # Build System Acceleration Lookup Indices
         cursor.execute('CREATE INDEX IF NOT EXISTS idx_doc_search ON documents(dataset_name, doc_id)')
         cursor.execute('CREATE INDEX IF NOT EXISTS idx_query_search ON queries(dataset_name, query_id)')
         cursor.execute('CREATE INDEX IF NOT EXISTS idx_qrel_search ON qrels(dataset_name, query_id)')
         cursor.execute('CREATE INDEX IF NOT EXISTS idx_processed_search ON processed_documents(dataset_name, doc_id)')
         cursor.execute('CREATE INDEX IF NOT EXISTS idx_emb_search ON document_embeddings(dataset_name, doc_id, embedding_model_name)')
-        
         conn.commit()
     print("⚙️ [DATABASE] Relational system schema and query optimization indexes verified/constructed successfully.")

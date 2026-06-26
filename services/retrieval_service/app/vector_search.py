@@ -71,25 +71,37 @@ class VectorSearcher:
     def search_batch(self, query_embeddings, top_k=100):
         if len(query_embeddings) == 0:
             return []
-        # scores has shape (num_docs, num_queries)
-        scores = np.dot(self.embeddings, query_embeddings.T)
         
-        batch_results = []
         num_queries = query_embeddings.shape[0]
-        for q_idx in range(num_queries):
-            q_scores = scores[:, q_idx]
+        num_docs = self.embeddings.shape[0]
+        batch_results = []
+        
+        # ─── Memory-safe chunked processing ───────────────────────────────────
+        # For Quora: 522,804 docs × 500 queries × 4 bytes ≈ 1 GB — causes OOM.
+        # Processing 50 queries at a time keeps each chunk ≤ 100 MB.
+        CHUNK_SIZE = 50
+        
+        for chunk_start in range(0, num_queries, CHUNK_SIZE):
+            chunk_end = min(chunk_start + CHUNK_SIZE, num_queries)
+            chunk_embs = query_embeddings[chunk_start:chunk_end]  # (chunk, dim)
             
-            # Optimize batch sorting using argpartition
-            idx = np.argpartition(q_scores, -top_k)[-top_k:]
-            idx = idx[np.argsort(q_scores[idx])[::-1]]
+            # scores shape: (num_docs, chunk_size)
+            chunk_scores = np.dot(self.embeddings, chunk_embs.T)
             
-            results = [
-                {
-                    "id": self.doc_ids[i],
-                    "score": float(q_scores[i])
-                }
-                for i in idx
-            ]
-            batch_results.append(results)
-            
+            for local_idx in range(chunk_end - chunk_start):
+                q_scores = chunk_scores[:, local_idx]
+                
+                # argpartition is O(N) for top-K extraction (faster than full sort)
+                idx = np.argpartition(q_scores, -top_k)[-top_k:]
+                idx = idx[np.argsort(q_scores[idx])[::-1]]
+                
+                results = [
+                    {
+                        "id": self.doc_ids[i],
+                        "score": float(q_scores[i])
+                    }
+                    for i in idx
+                ]
+                batch_results.append(results)
+        
         return batch_results

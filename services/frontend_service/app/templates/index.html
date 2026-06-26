@@ -146,6 +146,24 @@
 
         <div class="evaluation-trigger">
           <h3>System Evaluation</h3>
+          <!-- Offline / Online toggle -->
+          <div class="eval-mode-toggle">
+            <label class="eval-mode-label">
+              <input type="radio" name="eval-mode" id="eval-mode-offline" value="offline" checked />
+              <span class="eval-mode-text">⚡ Offline (Instant)</span>
+            </label>
+            <label class="eval-mode-label">
+              <input type="radio" name="eval-mode" id="eval-mode-online" value="online" />
+              <span class="eval-mode-text">🌐 Online (Live)</span>
+            </label>
+          </div>
+          <!-- Online query limit (shown only in online mode) -->
+          <div id="online-limit-wrapper" style="display:none;margin:8px 0;">
+            <label for="online-limit-input" style="font-size:0.8em;color:var(--text-secondary);">Queries to evaluate</label>
+            <input type="number" id="online-limit-input" min="10" max="5000" value="500"
+              style="width:100%;padding:6px 10px;border-radius:6px;border:1px solid rgba(0,0,0,0.12);font-size:0.85em;margin-top:4px;" />
+            <small style="color:var(--text-muted);font-size:0.73em;">⚠️ Online mode can take 2–10 minutes for neural models.</small>
+          </div>
           <button
             type="button"
             id="run-evaluation-btn"
@@ -182,8 +200,10 @@
           <div
             id="query-refinement-banner"
             class="refinement-banner"
-            style="display: none"
+            style="display: none; position: relative;"
           >
+            <!-- Close button for query refinement banner -->
+            <button type="button" class="close-refine-btn" id="close-refine-banner-btn" title="Dismiss refinements">&times;</button>
             <!-- Did you mean / Spelling Correction -->
             <div class="refine-row" id="spelling-correction-wrapper" style="display: none;">
               <span class="refine-label">Did you mean:</span>
@@ -266,14 +286,35 @@
           style="display: none"
         >
           <div class="section-header">
-            <h2>System Metrics & Evaluation</h2>
+            <h2>System Metrics & Evaluation &#8212; Before vs After Advanced Features</h2>
             <button class="close-btn" id="close-eval-btn">×</button>
           </div>
+
+          <!-- Real-time status message -->
+
+          <div id="eval-status-msg" style="font-size:0.85em;color:#94a3b8;margin-bottom:12px;padding:8px 12px;background:rgba(0,188,242,0.07);border-radius:6px;border-left:3px solid #00bcf2;">
+
+            Click "Run System Evaluation" to compare metrics before and after advanced features.
+
+          </div>
+
           <div class="eval-grid">
             <div class="chart-card">
               <canvas id="metricsChart"></canvas>
             </div>
             <div class="metrics-cards">
+              <!-- Column header labels -->
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px 6px;font-size:0.78em;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid rgba(0,0,0,0.06);margin-bottom:4px;">
+                <span style="flex:1;text-align:right;padding-right:8px;">Base</span>
+                <span style="width:30px;"></span>
+                <span style="flex:1;text-align:left;padding-left:8px;color:#00bcf2;">Enhanced</span>
+              </div>
+              <!-- Mode label details -->
+              <div style="display:flex;justify-content:space-between;font-size:0.7em;color:var(--text-muted);margin-bottom:10px;padding:0 4px;">
+                <span id="eval-base-mode" style="flex:1;text-align:right;padding-right:8px;font-style:italic;"></span>
+                <span style="width:30px;"></span>
+                <span id="eval-enhanced-mode" style="flex:1;text-align:left;padding-left:8px;font-style:italic;color:#7dd3fa;"></span>
+              </div>
               <div class="metric-card">
                 <span class="metric-title">MAP</span>
                 <div class="metric-comparison">

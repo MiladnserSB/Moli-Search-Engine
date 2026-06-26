@@ -34,6 +34,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const valRecall = document.getElementById('val-recall');
     const valP10 = document.getElementById('val-p10');
     const valNdcg = document.getElementById('val-ndcg');
+
+    // Evaluation mode (offline / online)
+    const evalModeOfflineRadio  = document.getElementById('eval-mode-offline');
+    const evalModeOnlineRadio   = document.getElementById('eval-mode-online');
+    const onlineLimitWrapper    = document.getElementById('online-limit-wrapper');
+    const onlineLimitInput      = document.getElementById('online-limit-input');
+
+    // Show / hide the query-limit input when switching mode
+    function syncEvalModeUI() {
+        const isOnline = evalModeOnlineRadio && evalModeOnlineRadio.checked;
+        if (onlineLimitWrapper) {
+            onlineLimitWrapper.style.display = isOnline ? 'block' : 'none';
+        }
+        if (runEvaluationBtn) {
+            runEvaluationBtn.textContent = isOnline
+                ? '🌐 Run Online Evaluation'
+                : '⚡ Run Offline Evaluation';
+        }
+    }
+    if (evalModeOfflineRadio) evalModeOfflineRadio.addEventListener('change', syncEvalModeUI);
+    if (evalModeOnlineRadio)  evalModeOnlineRadio.addEventListener('change', syncEvalModeUI);
+    syncEvalModeUI(); // initial state
     
     // Autocomplete Dropdown
     const autocompleteDropdown = document.getElementById('autocomplete-dropdown');
@@ -48,6 +70,211 @@ document.addEventListener('DOMContentLoaded', () => {
     const clusteringStatus = document.getElementById('clustering-status');
     
     let chartInstance = null;
+    let clusteringChartInstance = null;
+
+    // Tabs Navigation
+    const tabSearch = document.getElementById('tab-search');
+    const tabClustering = document.getElementById('tab-clustering');
+    const searchResultsSection = document.getElementById('search-results-section');
+    const clusteringSection = document.getElementById('clustering-section');
+    const clusterCardsContainer = document.getElementById('cluster-cards-container');
+
+    tabSearch.addEventListener('click', () => {
+        tabSearch.classList.add('active');
+        tabClustering.classList.remove('active');
+        searchResultsSection.style.display = 'block';
+        clusteringSection.style.display = 'none';
+    });
+
+    tabClustering.addEventListener('click', () => {
+        tabClustering.classList.add('active');
+        tabSearch.classList.remove('active');
+        searchResultsSection.style.display = 'none';
+        clusteringSection.style.display = 'block';
+        fetchAndRenderClustering();
+    });
+
+    // Dismiss Refinement Banner
+    const closeRefineBannerBtn = document.getElementById('close-refine-banner-btn');
+    if (closeRefineBannerBtn) {
+        closeRefineBannerBtn.addEventListener('click', () => {
+            refinementBanner.style.display = 'none';
+        });
+    }
+
+    // HSL color helpers for dynamic, aesthetic cluster visualization
+    function getClusterColor(clusterId, totalClusters) {
+        const hue = (clusterId * (360 / totalClusters)) % 360;
+        return `hsla(${hue}, 70%, 55%, 0.85)`;
+    }
+    function getClusterBorderColor(clusterId, totalClusters) {
+        const hue = (clusterId * (360 / totalClusters)) % 360;
+        return `hsl(${hue}, 75%, 45%)`;
+    }
+
+    async function fetchAndRenderClustering() {
+        const dataset = datasetSelect.value;
+        const numClusters = parseInt(clustersCountInput.value) || 5;
+        
+        clusterCardsContainer.innerHTML = '<div class="loader" style="grid-column: 1/-1; text-align: center; padding: 2rem;">Loading clustering analysis...</div>';
+        
+        try {
+            const response = await fetch(`${GATEWAY_URL}/api/cluster/plot/${dataset}/${numClusters}`);
+            if (!response.ok) throw new Error('Failed to fetch clustering plot data');
+            const data = await response.json();
+            
+            renderClusteringChart(data, numClusters);
+            renderClusterCards(data, numClusters);
+        } catch (error) {
+            clusterCardsContainer.innerHTML = `<div class="error-msg" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #ef4444;">Error loading clusters: ${error.message}</div>`;
+        }
+    }
+
+    function renderClusteringChart(data, numClusters) {
+        const ctx = document.getElementById('clusteringChart').getContext('2d');
+        if (clusteringChartInstance) {
+            clusteringChartInstance.destroy();
+        }
+
+        // Group points by cluster
+        const datasets = [];
+        for (let c = 0; c < numClusters; c++) {
+            const pointsInCluster = data.points.filter(p => p.cluster === c);
+            datasets.push({
+                label: data.cluster_names[c] || `Cluster ${c + 1}`,
+                data: pointsInCluster.map(p => ({
+                    x: p.x,
+                    y: p.y,
+                    doc_id: p.doc_id,
+                    snippet: p.snippet
+                })),
+                backgroundColor: getClusterColor(c, numClusters),
+                borderColor: getClusterBorderColor(c, numClusters),
+                borderWidth: 1.5,
+                pointRadius: 6,
+                pointHoverRadius: 9,
+                showLine: false
+            });
+        }
+
+        // Add centroids dataset
+        datasets.push({
+            label: 'Cluster Centers (Centroids)',
+            data: data.centroids.map(c => ({
+                x: c.x,
+                y: c.y,
+                cluster: c.cluster
+            })),
+            backgroundColor: '#1f2937',
+            borderColor: '#111827',
+            borderWidth: 2,
+            pointRadius: 11,
+            pointHoverRadius: 13,
+            pointStyle: 'crossRot', // renders as 'X' marker!
+            showLine: false
+        });
+
+        clusteringChartInstance = new Chart(ctx, {
+            type: 'scatter',
+            data: { datasets },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#1f2937',
+                            font: {
+                                family: "'Outfit', 'Inter', sans-serif",
+                                size: 11,
+                                weight: '500'
+                            },
+                            boxWidth: 12
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1f2937',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        cornerRadius: 6,
+                        padding: 10,
+                        callbacks: {
+                            label: function(context) {
+                                const raw = context.raw;
+                                if (raw.doc_id !== undefined) {
+                                    return `ID: ${raw.doc_id} | ${raw.snippet}`;
+                                }
+                                return `Centroid (Cluster ${raw.cluster + 1})`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'PCA Component 1',
+                            color: '#4b5563',
+                            font: { family: "'Outfit', sans-serif", size: 12, weight: '600' }
+                        },
+                        grid: { color: 'rgba(0, 0, 0, 0.04)' },
+                        ticks: { color: '#4b5563' }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'PCA Component 2',
+                            color: '#4b5563',
+                            font: { family: "'Outfit', sans-serif", size: 12, weight: '600' }
+                        },
+                        grid: { color: 'rgba(0, 0, 0, 0.04)' },
+                        ticks: { color: '#4b5563' }
+                    }
+                }
+            }
+        });
+    }
+
+    function renderClusterCards(data, numClusters) {
+        clusterCardsContainer.innerHTML = '';
+        
+        for (let c = 0; c < numClusters; c++) {
+            const pointsInCluster = data.points.filter(p => p.cluster === c);
+            const topDocs = pointsInCluster.slice(0, 3); // show top 3 docs
+            
+            const card = document.createElement('div');
+            card.className = 'cluster-card';
+            
+            const headerColor = getClusterBorderColor(c, numClusters);
+            
+            let listItemsHtml = '';
+            if (topDocs.length === 0) {
+                listItemsHtml = '<li class="cluster-doc-item" style="color: var(--text-muted); font-style: italic;">No sampled documents in this cluster</li>';
+            } else {
+                topDocs.forEach(doc => {
+                    listItemsHtml += `
+                        <li class="cluster-doc-item">
+                            <span class="cluster-doc-id">ID: ${doc.doc_id}</span>
+                            <span class="cluster-doc-text">${doc.snippet}</span>
+                        </li>
+                    `;
+                });
+            }
+            
+            card.innerHTML = `
+                <div class="cluster-card-header" style="background-color: ${headerColor};">
+                    <span>${data.cluster_names[c] || `Cluster ${c+1}`}</span>
+                </div>
+                <div class="cluster-card-body">
+                    <ul class="cluster-doc-list">
+                        ${listItemsHtml}
+                    </ul>
+                </div>
+            `;
+            clusterCardsContainer.appendChild(card);
+        }
+    }
 
     // Toggle slider visibility
     modelSelect.addEventListener('change', (e) => {
@@ -160,7 +387,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const div = document.createElement('div');
                 div.className = 'autocomplete-item';
                 
-                // Show clock for history, search glass for new terms
                 const icon = item.is_history ? '🕒' : '🔍';
                 div.innerHTML = `<span class="autocomplete-icon" style="margin-right: 8px; opacity: 0.6;">${icon}</span><span class="autocomplete-text">${item.text}</span>`;
                 
@@ -193,6 +419,9 @@ document.addEventListener('DOMContentLoaded', () => {
         searchResultsList.innerHTML = '<div class="loader">Loading results...</div>';
         refinementBanner.style.display = 'none';
 
+        // Ensure we switch to the search results tab when triggering a new search
+        tabSearch.click();
+
         const requestData = {
             query: query,
             dataset: datasetSelect.value,
@@ -204,7 +433,6 @@ document.addEventListener('DOMContentLoaded', () => {
             top_k: 10
         };
 
-        // Fetch spelling correction, expansion, and alternatives (always-on query refinement)
         fetchQueryRefinement(query);
 
         try {
@@ -240,7 +468,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             
-            // 1. Spelling Correction (Did you mean?)
             const spellingWrapper = document.getElementById('spelling-correction-wrapper');
             if (data.corrected_query && data.corrected_query.toLowerCase() !== query.toLowerCase()) {
                 suggestedQueryLink.textContent = data.corrected_query;
@@ -249,7 +476,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 spellingWrapper.style.display = 'none';
             }
 
-            // 2. Query Expansion
             const expansionWrapper = document.getElementById('query-expansion-wrapper');
             const targetCompare = data.corrected_query || query;
             if (data.expanded_query && data.expanded_query.toLowerCase() !== targetCompare.toLowerCase()) {
@@ -259,7 +485,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 expansionWrapper.style.display = 'none';
             }
 
-            // 2b. Personalized Query Expansion (History-based)
             const personalizedWrapper = document.getElementById('personalized-expansion-wrapper');
             const personalizedLink = document.getElementById('personalized-query-link');
             const baseExpandedCompare = data.expanded_query || targetCompare;
@@ -272,7 +497,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // 3. Alternative Queries
             const alternativeWrapper = document.getElementById('alternative-queries-wrapper');
             const alternativeList = document.getElementById('alternative-queries-list');
             if (data.alternative_queries && data.alternative_queries.length > 0) {
@@ -294,7 +518,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 alternativeWrapper.style.display = 'none';
             }
 
-            // Show banner if any item is visible
             const isPersonalizedVisible = personalizedWrapper && personalizedWrapper.style.display === 'flex';
             if (spellingWrapper.style.display === 'flex' || 
                 expansionWrapper.style.display === 'flex' || 
@@ -320,7 +543,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         searchResultsList.innerHTML = '';
 
-        // Render Vector Fusion Info Banner if active
         if (data.personalized_fusion_info && data.personalized_fusion_info.historical_queries && data.personalized_fusion_info.historical_queries.length > 0) {
             const fusionAlert = document.createElement('div');
             fusionAlert.className = 'info-banner';
@@ -383,6 +605,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             clusteringStatus.textContent = `Status: ${data.status}. ${data.message}`;
             clusteringStatus.style.color = '#34d399';
+
+            // Automatically switch to tab and reload plot coordinates on demand
+            tabClustering.click();
         } catch (error) {
             clusteringStatus.textContent = `Error: ${error.message}`;
             clusteringStatus.style.color = '#f87171';
@@ -392,42 +617,150 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle System Evaluation Drawer
     runEvaluationBtn.addEventListener('click', async () => {
         evaluationDash.style.display = 'flex';
-        valMap.textContent = 'Calculating...';
-        valRecall.textContent = '...';
-        valP10.textContent = '...';
-        valNdcg.textContent = '...';
+
+        // Determine mode
+        const isOnlineMode = evalModeOnlineRadio && evalModeOnlineRadio.checked;
+        const evalMode = isOnlineMode ? 'online' : 'offline';
+        const onlineLimit = onlineLimitInput ? parseInt(onlineLimitInput.value) || 500 : 500;
+        
+        // Base elements
+        const baseMap    = document.getElementById('base-map');
+        const baseRecall = document.getElementById('base-recall');
+        const baseP10    = document.getElementById('base-p10');
+        const baseNdcg   = document.getElementById('base-ndcg');
+        
+        // Improvement badges
+        const improveMap    = document.getElementById('improve-map');
+        const improveRecall = document.getElementById('improve-recall');
+        const improveP10    = document.getElementById('improve-p10');
+        const improveNdcg   = document.getElementById('improve-ndcg');
+
+        // Labels for base/enhanced columns
+        const baseModeEl     = document.getElementById('eval-base-mode');
+        const enhancedModeEl = document.getElementById('eval-enhanced-mode');
+        const evalStatusMsg  = document.getElementById('eval-status-msg');
+        
+        // ── Reset UI state ─────────────────────────────────────────────────
+        [baseMap, baseRecall, baseP10, baseNdcg].forEach(el => el.textContent = '…');
+        [valMap, valRecall, valP10, valNdcg].forEach(el => el.textContent = '…');
+        [improveMap, improveRecall, improveP10, improveNdcg].forEach(el => {
+            el.textContent = '';
+            el.className = 'metric-improvement';
+        });
+        if (baseModeEl)     baseModeEl.textContent    = '';
+        if (enhancedModeEl) enhancedModeEl.textContent = '';
+        
+        const modeLabel = isOnlineMode
+            ? `⏳ Online mode: running Base evaluation (${onlineLimit} queries)…`
+            : '⚡ Offline mode: loading pre-computed Base results from cache…';
+        if (evalStatusMsg) evalStatusMsg.textContent = modeLabel;
 
         const requestData = {
-            dataset: datasetSelect.value,
-            method: modelSelect.value,
-            use_additional_features: additionalFeaturesChk.checked,
-            bm25_k1: parseFloat(document.getElementById('bm25-k1').value),
-            bm25_b: parseFloat(document.getElementById('bm25-b').value),
-            hybrid_alpha: parseFloat(document.getElementById('hybrid-alpha').value)
+            dataset:       datasetSelect.value,
+            method:        modelSelect.value,
+            bm25_k1:       parseFloat(document.getElementById('bm25-k1').value),
+            bm25_b:        parseFloat(document.getElementById('bm25-b').value),
+            hybrid_alpha:  parseFloat(document.getElementById('hybrid-alpha').value),
+            mode:          evalMode,
+            online_limit:  onlineLimit
         };
 
         try {
-            const response = await fetch(`${GATEWAY_URL}/api/evaluate`, {
+            // ── Step 1: Base evaluation ────────────────────────────────────
+            const baseResponse = await fetch(`${GATEWAY_URL}/api/evaluate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestData)
+                body: JSON.stringify({ ...requestData, use_additional_features: false })
             });
 
-            if (!response.ok) throw new Error('Evaluation request failed');
-            const data = await response.json();
+            if (!baseResponse.ok) {
+                const errText = await baseResponse.text();
+                throw new Error(`Base evaluation failed (${baseResponse.status}): ${errText.slice(0, 200)}`);
+            }
+            const baseData = await baseResponse.json();
 
-            // Update DOM
-            valMap.textContent = data.map_score.toFixed(3);
-            valRecall.textContent = data.recall_score.toFixed(3);
-            valP10.textContent = data.precision_at_k.toFixed(3);
-            valNdcg.textContent = data.ndcg_score.toFixed(3);
+            // Update Base column
+            baseMap.textContent    = baseData.map_score.toFixed(4);
+            baseRecall.textContent = baseData.recall_score.toFixed(4);
+            baseP10.textContent    = baseData.precision_at_k.toFixed(4);
+            baseNdcg.textContent   = baseData.ndcg_score.toFixed(4);
 
-            // Redraw Chart
-            renderChart(data);
+            const baseQCount = baseData.num_queries_evaluated || '—';
+            const baseMode   = baseData.mode || 'Base';
+            if (baseModeEl) baseModeEl.textContent = `n=${baseQCount}`;
+
+            // Update status for step 2
+            const step2Label = isOnlineMode
+                ? `✅ Base done (n=${baseQCount})! Running Enhanced evaluation (${onlineLimit} queries + spell correction)… may take 2–10 min for neural models.`
+                : `✅ Base loaded (n=${baseQCount})! Loading Enhanced results from cache…`;
+            if (evalStatusMsg) evalStatusMsg.textContent = step2Label;
+
+            // ── Step 2: Enhanced evaluation ────────────────────────────────
+            const enhancedResponse = await fetch(`${GATEWAY_URL}/api/evaluate`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...requestData, use_additional_features: true })
+            });
+
+            if (!enhancedResponse.ok) {
+                const errText = await enhancedResponse.text();
+                throw new Error(`Enhanced evaluation failed (${enhancedResponse.status}): ${errText.slice(0, 200)}`);
+            }
+            const enhancedData = await enhancedResponse.json();
+
+            // Update Enhanced column
+            valMap.textContent    = enhancedData.map_score.toFixed(4);
+            valRecall.textContent = enhancedData.recall_score.toFixed(4);
+            valP10.textContent    = enhancedData.precision_at_k.toFixed(4);
+            valNdcg.textContent   = enhancedData.ndcg_score.toFixed(4);
+
+            const enhQCount = enhancedData.num_queries_evaluated || '—';
+            const enhMode   = enhancedData.mode || 'Enhanced';
+            if (enhancedModeEl) enhancedModeEl.textContent = `n=${enhQCount}`;
+
+            if (evalStatusMsg) {
+                evalStatusMsg.textContent =
+                    `✅ Evaluation complete! Showing Before vs After Advanced Features. ` +
+                    `Mode: ${evalMode.toUpperCase()} | Dataset: ${requestData.dataset} | Model: ${requestData.method.toUpperCase()}`;
+            }
+
+            // ── Improvement badges ─────────────────────────────────────────
+            function updateImprovementBadge(badge, baseVal, enhancedVal) {
+                const diff = enhancedVal - baseVal;
+                let pct = 0.0;
+                if (baseVal > 0) {
+                    pct = (diff / baseVal) * 100;
+                } else if (enhancedVal > 0) {
+                    pct = 100.0;
+                }
+                const sign = diff > 0 ? '+' : '';
+                if (diff > 0.0001) {
+                    badge.textContent = `${sign}${pct.toFixed(1)}%`;
+                    badge.classList.add('positive');
+                } else if (diff < -0.0001) {
+                    badge.textContent = `${pct.toFixed(1)}%`;
+                    badge.classList.add('negative');
+                } else {
+                    badge.textContent = `≈ same`;
+                    badge.classList.add('neutral');
+                }
+            }
+
+            updateImprovementBadge(improveMap,    baseData.map_score,      enhancedData.map_score);
+            updateImprovementBadge(improveRecall,  baseData.recall_score,   enhancedData.recall_score);
+            updateImprovementBadge(improveP10,     baseData.precision_at_k, enhancedData.precision_at_k);
+            updateImprovementBadge(improveNdcg,    baseData.ndcg_score,     enhancedData.ndcg_score);
+
+            // Redraw grouped comparison Chart
+            renderChart(baseData, enhancedData);
+
         } catch (error) {
-            valMap.textContent = 'Error';
-            valRecall.textContent = 'Error';
-            console.error(error);
+            if (evalStatusMsg) evalStatusMsg.textContent = `❌ Error: ${error.message}`;
+            valMap.textContent    = 'Error';
+            valRecall.textContent = '–';
+            valP10.textContent    = '–';
+            valNdcg.textContent   = '–';
+            console.error('[Evaluation Error]', error);
         }
     });
 
@@ -435,8 +768,8 @@ document.addEventListener('DOMContentLoaded', () => {
         evaluationDash.style.display = 'none';
     });
 
-    // Chart.js helper
-    function renderChart(evalData) {
+    // Chart.js helper for grouped comparison double-bar chart
+    function renderChart(baseData, enhancedData) {
         const ctx = document.getElementById('metricsChart').getContext('2d');
         
         if (chartInstance) {
@@ -447,30 +780,36 @@ document.addEventListener('DOMContentLoaded', () => {
             type: 'bar',
             data: {
                 labels: ['MAP', 'Recall', 'Precision@10', 'nDCG'],
-                datasets: [{
-                    label: `Evaluation Scores on ${evalData.dataset.toUpperCase()}`,
-                    data: [
-                        evalData.map_score,
-                        evalData.recall_score,
-                        evalData.precision_at_k,
-                        evalData.ndcg_score
-                    ],
-                    backgroundColor: [
-                        'rgba(139, 92, 246, 0.85)', // purple
-                        'rgba(59, 130, 246, 0.85)', // blue
-                        'rgba(236, 72, 153, 0.85)', // pink
-                        'rgba(16, 185, 129, 0.85)'  // green (solid emerald)
-                    ],
-                    borderColor: [
-                        '#8b5cf6',
-                        '#3b82f6',
-                        '#ec4899',
-                        '#10b981'
-                    ],
-                    borderWidth: 1.5,
-                    borderRadius: 6, // rounded corners for bars
-                    borderSkipped: false
-                }]
+                datasets: [
+                    {
+                        label: 'Base System (Standard)',
+                        data: [
+                            baseData.map_score,
+                            baseData.recall_score,
+                            baseData.precision_at_k,
+                            baseData.ndcg_score
+                        ],
+                        backgroundColor: 'rgba(148, 163, 184, 0.8)', // Slate grey (#94a3b8)
+                        borderColor: '#94a3b8',
+                        borderWidth: 1.5,
+                        borderRadius: 6,
+                        borderSkipped: false
+                    },
+                    {
+                        label: 'Enhanced System (With Refinement & Fusion)',
+                        data: [
+                            enhancedData.map_score,
+                            enhancedData.recall_score,
+                            enhancedData.precision_at_k,
+                            enhancedData.ndcg_score
+                        ],
+                        backgroundColor: 'rgba(0, 188, 242, 0.85)', // Sky blue (#00bcf2)
+                        borderColor: '#00bcf2',
+                        borderWidth: 1.5,
+                        borderRadius: 6,
+                        borderSkipped: false
+                    }
+                ]
             },
             options: {
                 responsive: true,
@@ -479,7 +818,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     legend: {
                         position: 'top',
                         labels: {
-                            color: '#1f2937', // dark charcoal for readability
+                            color: '#1f2937',
                             font: {
                                 family: "'Outfit', 'Inter', sans-serif",
                                 size: 12,
@@ -501,10 +840,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         beginAtZero: true,
                         max: 1.0,
                         grid: {
-                            color: 'rgba(0, 0, 0, 0.05)' // very subtle dark lines
+                            color: 'rgba(0, 0, 0, 0.05)'
                         },
                         ticks: {
-                            color: '#4b5563', // readable charcoal grey
+                            color: '#4b5563',
                             font: {
                                 family: "'Inter', sans-serif",
                                 size: 11
@@ -516,7 +855,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             display: false
                         },
                         ticks: {
-                            color: '#4b5563', // readable charcoal grey
+                            color: '#4b5563',
                             font: {
                                 family: "'Inter', sans-serif",
                                 size: 11,

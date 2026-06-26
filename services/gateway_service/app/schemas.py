@@ -55,6 +55,8 @@ class EvaluationRequest(BaseModel):
     bm25_k1: Optional[float] = 1.5
     bm25_b: Optional[float] = 0.75
     hybrid_alpha: Optional[float] = 0.5
+    mode: str = "offline"       # "offline" = instant cache | "online" = live retrieval
+    online_limit: int = 500     # number of queries for online mode
 
 class EvaluationResponse(BaseModel):
     dataset: str
@@ -62,6 +64,8 @@ class EvaluationResponse(BaseModel):
     recall_score: float
     precision_at_k: float
     ndcg_score: float
+    num_queries_evaluated: Optional[int] = None
+    mode: Optional[str] = None
 
 
 class ClusteringRequest(BaseModel):

@@ -188,7 +188,7 @@ def search_documents_batch(query_req: BatchQueryRequest):
         retrieval_resp = requests.post(
             f"{settings.RETRIEVAL_SERVICE_URL}/search/batch",
             json=retrieval_payload,
-            timeout=120.0
+            timeout=300.0  # 5 minutes for large batch retrieval (500 queries × neural models)
         )
         
         if retrieval_resp.status_code != 200:
@@ -206,7 +206,7 @@ def evaluate_system(eval_req: EvaluationRequest):
         resp = requests.post(
             f"{settings.EVALUATION_SERVICE_URL}/evaluate",
             json=eval_req.model_dump(),
-            timeout=120.0
+            timeout=600.0  # 10 minutes — allows full 500-query Enhanced evaluation with spell correction
         )
         if resp.status_code != 200:
             raise HTTPException(status_code=resp.status_code, detail="Error during evaluation")

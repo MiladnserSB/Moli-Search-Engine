@@ -59,52 +59,75 @@ class TFIDFSearcher:
     def search_batch(self, queries, top_k=100, inverted_index=None):
         if not queries:
             return []
-        # Transform all queries at once
-        q = self.vectorizer.transform(queries)
-        # Compute dot product
-        scores = self.doc_vectors.dot(q.T).toarray()  # (num_docs, num_queries)
         
         batch_results = []
-        for q_idx in range(len(queries)):
-            q_scores = scores[:, q_idx]
+        corpus_size = len(self.doc_ids)
+        
+        # ─── Memory-safe chunked processing ─────────────────────────────────────
+        # The naive approach: self.doc_vectors.dot(q.T).toarray() creates a
+        # dense (522k × 1000) float64 matrix = ~4 GB → ArrayMemoryError crash.
+        # Instead, when an inverted index is available we compute each query's
+        # scores only for its candidate documents (no full matrix).
+        # Without an index, we chunk into 100-query batches to cap RAM use.
+        CHUNK_SIZE = 100
+        
+        if inverted_index:
+            # Fast per-query path: use inverted index to get candidates first
+            q_matrix = self.vectorizer.transform(queries)  # sparse (N_queries, vocab)
             
-            candidate_indices = None
-            if inverted_index:
+            for q_idx in range(len(queries)):
                 query_tokens = queries[q_idx].split()
                 candidate_ids = set()
-                corpus_size = len(self.doc_ids)
                 max_df = min(15000, int(corpus_size * 0.05))
                 for token in query_tokens:
                     if token in inverted_index:
                         postings = inverted_index[token]
                         if len(postings) <= max_df:
                             candidate_ids.update(postings)
+                
                 if candidate_ids:
-                    candidate_indices = [self.doc_id_to_index[str(doc_id)] for doc_id in candidate_ids if str(doc_id) in self.doc_id_to_index]
-            
-            if candidate_indices:
-                candidate_indices = np.array(candidate_indices, dtype=np.int32)
-                candidate_scores = q_scores[candidate_indices]
-                idx = np.argsort(candidate_scores)[::-1][:top_k]
-                results = [
-                    {
-                        "id": self.doc_ids[candidate_indices[i]],
-                        "score": float(candidate_scores[i])
-                    }
-                    for i in idx
-                ]
-            else:
+                    candidate_indices = np.array(
+                        [self.doc_id_to_index[str(d)] for d in candidate_ids if str(d) in self.doc_id_to_index],
+                        dtype=np.int32
+                    )
+                    if len(candidate_indices) > 0:
+                        # Dense dot product only for candidates: tiny memory footprint
+                        q_vec = q_matrix[q_idx]
+                        candidate_scores = self.doc_vectors[candidate_indices].dot(q_vec.T).toarray().flatten()
+                        idx = np.argsort(candidate_scores)[::-1][:top_k]
+                        batch_results.append([
+                            {"id": self.doc_ids[candidate_indices[i]], "score": float(candidate_scores[i])}
+                            for i in idx
+                        ])
+                        continue
+                
+                # Fallback: no candidates found via index — compute full column
+                q_vec = q_matrix[q_idx]
+                q_scores = self.doc_vectors.dot(q_vec.T).toarray().flatten()
                 idx = np.argpartition(q_scores, -top_k)[-top_k:]
                 idx = idx[np.argsort(q_scores[idx])[::-1]]
-                results = [
-                    {
-                        "id": self.doc_ids[i],
-                        "score": float(q_scores[i])
-                    }
+                batch_results.append([
+                    {"id": self.doc_ids[i], "score": float(q_scores[i])}
                     for i in idx
-                ]
-            batch_results.append(results)
-            
+                ])
+        else:
+            # Chunked fallback (no inverted index): process 100 queries at a time
+            # Quora: 522k × 100 × 8 bytes ≈ 400 MB per chunk — safe on 8 GB RAM
+            for chunk_start in range(0, len(queries), CHUNK_SIZE):
+                chunk_queries = queries[chunk_start: chunk_start + CHUNK_SIZE]
+                q_chunk = self.vectorizer.transform(chunk_queries)
+                # toarray only on chunk — manageable size
+                chunk_scores = self.doc_vectors.dot(q_chunk.T).toarray()  # (N_docs, chunk)
+                
+                for local_idx in range(len(chunk_queries)):
+                    q_scores = chunk_scores[:, local_idx]
+                    idx = np.argpartition(q_scores, -top_k)[-top_k:]
+                    idx = idx[np.argsort(q_scores[idx])[::-1]]
+                    batch_results.append([
+                        {"id": self.doc_ids[i], "score": float(q_scores[i])}
+                        for i in idx
+                    ])
+        
         return batch_results
 
 
